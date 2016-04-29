@@ -7,7 +7,7 @@ __author__ = 'Jason'
 import getopt
 import sys
 import os
-
+import time
 
 def getopts():
     try:
@@ -85,7 +85,9 @@ dev.off()
 \n'''%(path1,out,out))
     print 'clean'
     os.system('chmod 755 %s\n' % script_path)
+    time.sleep(1)
     os.system('%s\n'%script_path)
+    time.sleep(1)
     os.system('rm %s %s '%(path1,script_path))
 
 

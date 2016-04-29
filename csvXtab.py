@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Jason'
 # Create: 20160114
-# Modified on: 20160115, 20160118 fix bug, 20160119 read csv file by csv module
+# Modified on: 20160115, 20160118 fix bug, 20160119 read csv file by csv module, 20160421 fix a bug
 # Simple python script that convert csv to tab (-c or --csv option) or convert tab to csv (-t or --tab option).
 # Support stdin and stdout
 
@@ -27,17 +27,12 @@ def readLine(path,isExsitCSVFile):
     :return: line string or list
     """
     if path:
-        for line in open(path,'r'):
-            yield line
-    else:
         if isExsitCSVFile:
-            with open('eggs.csv', 'rb') as csvfile:
-                spamreader = csv.reader(path)
-                for line in spamreader:
-                    yield line
-        else:
-            for line in sys.stdin.readlines():
+            reader = csv.reader(open(path, 'rb'))
+            for line in reader:
                 yield line
+    for line in csv.reader(sys.stdin):
+        yield line
 
 def csv2tab(line):
     """
@@ -46,7 +41,7 @@ def csv2tab(line):
     :return: 
     """
     if type(line) is types.ListType:
-        return '\t'.join(line)
+        return '\t'.join(line)+'\n'
     line=line.replace(',"','"').replace('",','"')
     t=line.split('"')#if , is enclosed by " , then , in odd number
     newt=[]
@@ -71,8 +66,10 @@ def tab2csv(line):
     return ','.join(temp)
 
 def main():
+    #sys.argv=['','-i','C:\\Users\\Administrator\\Desktop\\t.csv']
     options=getOptions()
     isExsitCSVFile=False
+
     if options.output:
         out=open(options.output,'w')
     else: out=sys.stdout # if output path not specified, use stdout instead
@@ -89,4 +86,5 @@ def main():
 
 if __name__=='__main__':
     main()
+
 

@@ -15,7 +15,8 @@ Description: This script will convert file from varscan to annovar format.
    exit
 fi
 
-filter="Germline|_hap|Un_g|_random"
+#filter="Germline|_hap|Un_g|_random"
+filter="asdf"
 in=""
 out=""
 
@@ -42,9 +43,9 @@ if [ -z "$in" ];then
     if [ -z "$out" ];then
         while read line;do
 	   echo "$line" | grep -Ev "$filter|^#" | awk -F "\t" '$1!~/^chrom/ { \
-		if (match($4,"-")!=0)       {sub("-","",$4); l=length($4); print $1"\t"$2+1"\t"$2+l"\t"$4"\t-\t"$13} \
-		else if (match($4,"\+")!=0) {sub("\+","",$4);l=length($4); print $1"\t"$2"\t"$2"\t-\t"$4"\t"$13} \
-		else {print $1"\t"$2"\t"$2"\t"$3"\t"$4"\t"$13} \
+		if (match($4,"-")!=0)       {sub("-","",$4); l=length($4); print $1"\t"$2+1"\t"$2+l"\t"$4"\t-\t"$13"\t"$11} \
+		else if (match($4,"\+")!=0) {sub("\+","",$4);l=length($4); print $1"\t"$2"\t"$2"\t-\t"$4"\t"$13"\t"$11} \
+		else {print $1"\t"$2"\t"$2"\t"$3"\t"$4"\t"$13"\t"$11} \
 		}'
 	done
     else
@@ -53,24 +54,24 @@ if [ -z "$in" ];then
 	fi                                                             
 	while read line;do                                                              
             echo "$line" | grep -Ev "$filter|^#" | awk -F "\t" '$1!~/^chrom/ { \
-                if (match($4,"-")!=0)       {sub("-","",$4); l=length($4); print $1"\t"$2+1"\t"$2+l"\t"$4"\t-\t"$13} \
-                else if (match($4,"\+")!=0) {sub("\+","",$4);l=length($4); print $1"\t"$2"\t"$2"\t-\t"$4"\t"$13} \
-                else {print $1"\t"$2"\t"$2"\t"$3"\t"$4"\t"$13} \
+                if (match($4,"-")!=0)       {sub("-","",$4); l=length($4); print $1"\t"$2+1"\t"$2+l"\t"$4"\t-\t"$13"\t"$11} \
+                else if (match($4,"\+")!=0) {sub("\+","",$4);l=length($4); print $1"\t"$2"\t"$2"\t-\t"$4"\t"$13"\t"$11} \
+                else {print $1"\t"$2"\t"$2"\t"$3"\t"$4"\t"$13"\t"$11} \
                 }'  >> "$out"
         done
     fi
 else
     if [ -z "$out" ];then                                                                                                           
         cat "$in" | grep -Ev "$filter|^#" | awk -F "\t" '$1!~/^chrom/ { \
-                if (match($4,"-")!=0)       {sub("-","",$4); l=length($4); print $1"\t"$2+1"\t"$2+l"\t"$4"\t-\t"$13} \
-                else if (match($4,"\+")!=0) {sub("\+","",$4);l=length($4); print $1"\t"$2"\t"$2"\t-\t"$4"\t"$13} \
-		else {print $1"\t"$2"\t"$2"\t"$3"\t"$4"\t"$13} \
+                if (match($4,"-")!=0)       {sub("-","",$4); l=length($4); print $1"\t"$2+1"\t"$2+l"\t"$4"\t-\t"$13"\t"$11} \
+                else if (match($4,"\+")!=0) {sub("\+","",$4);l=length($4); print $1"\t"$2"\t"$2"\t-\t"$4"\t"$13"\t"$11} \
+		else {print $1"\t"$2"\t"$2"\t"$3"\t"$4"\t"$13"\t"$11} \
 		}'   
     else
         cat "$in" | grep -Ev "$filter|^#" | awk  -F "\t" '$1!~/^chrom/ { \
-                if (match($4,"-")!=0)       {sub("-","",$4); l=length($4); print $1"\t"$2+1"\t"$2+l"\t"$4"\t-\t"$13} \
-                else if (match($4,"\+")!=0) {sub("\+","",$4);l=length($4); print $1"\t"$2"\t"$2"\t-\t"$4"\t"$13} \
-                else {print $1"\t"$2"\t"$2"\t"$3"\t"$4"\t"$13} \
+                if (match($4,"-")!=0)       {sub("-","",$4); l=length($4); print $1"\t"$2+1"\t"$2+l"\t"$4"\t-\t"$13"\t"$11} \
+                else if (match($4,"\+")!=0) {sub("\+","",$4);l=length($4); print $1"\t"$2"\t"$2"\t-\t"$4"\t"$13"\t"$11} \
+                else {print $1"\t"$2"\t"$2"\t"$3"\t"$4"\t"$13"\t"$11} \
                 }'   > "$out"
     fi
 fi

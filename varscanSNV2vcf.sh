@@ -14,7 +14,8 @@ Description: This script will convert file from varscan to vcf format (first fiv
    exit
 fi
 
-filter="Germline|_hap|Un_g|_random"
+#filter="Germline|_hap|Un_g|_random"
+filter="asdf"
 in=""
 out=""
 

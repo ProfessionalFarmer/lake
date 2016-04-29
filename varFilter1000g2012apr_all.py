@@ -2,33 +2,35 @@
 __author__ = 'Jason'
 '''
 Create   on: 20160125
-Modified on: 20160304, 20160429 filter unkonwn
+Modified on: 20160304
 '''
 import getopt
 import sys
+import string
 
-
-colName='ExonicFunc.refGene'
+colName='1000g2012apr_all'
 colEmpty='.'
+cutoff=0.05
 
 def getopts():
     try:
-        options,args = getopt.getopt(sys.argv[1:],"i:o:",[''])
+        options,args = getopt.getopt(sys.argv[1:],"i:o:c:",[''])
         return options
     except getopt.GetoptError:
         print '''
-        program.py -i <INPUT> -o <OUTPUT>
+        program.py -i <INPUT> -o <OUTPUT> -c <CUTOFF>
         Support stdin and sdtout.
         '''
         sys.exit()
 
 def filter(list):
     """
-    Filter snp out of exonic region
+    Filter snp with frequency higher than cutoff
     :param list: raw data
     :return:
     """
     new=[]
+    global cutoff
     for i,line in enumerate(list):
         t = line.strip().split('\t')
         if i == 0:
@@ -36,13 +38,16 @@ def filter(list):
             new.append(line)
             continue
         if t[index]==colEmpty:
+            new.append(line)
             continue
-	if 'unknown'==t[index]:
+        freq=string.atof(t[index])
+        if freq>=cutoff:
             continue
         new.append(line)
     return new
 
 def main():
+    global cutoff
     #sys.argv=['','-i','C:\\Users\\Administrator\\Desktop\\CHG004881_CHG004880.germlineSNV.ann']
     opts=getopts()
     input,output=None,None
@@ -53,6 +58,9 @@ def main():
             continue
         if key in ('-o'):
             output=value
+            continue
+        if key in ('-c'):
+            cutoff=float(value)
             continue
     if input:
         ifs=open(input,'r')
@@ -66,7 +74,7 @@ def main():
     total=len(list)-1
     list=filter(list)
     after=len(list)-1
-    sys.stderr.write('Exonic region filter: filter snp out of coding region\nTotal number: %d\nAfter filter: %d\n' % (total,after))
+    sys.stderr.write('1000 genome frequency filter: filter out snp with frequency higher than %f\nTotal number: %d\nAfter filter: %d\n' % (cutoff,total,after))
 
     for line in list:
         ofs.write(line)
@@ -75,5 +83,4 @@ def main():
 
 if __name__=='__main__':
     main()
-
 
