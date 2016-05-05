@@ -11,7 +11,7 @@ out=$2
 csvXtab="python /home/zzx/bin/csvXtab.py"
 
 if [ -z "$out" ];then
-    $out=".tmp.annovar"
+    out=".tmp.annovar"
 fi
 
 # --includeinfo will print all information in vcf
@@ -22,10 +22,15 @@ fi
 #perl $converter -format vcf4 --withzyg $in > ${in}.avinput
 
 # other like hgmd
-perl $annovar  ${in}.avinput $db  -nastring . -outfile $out.temp  -remove -otherinfo -protocol refGene,genomicSuperDups,phastConsElements46way,esp6500siv2_all,1000g2012apr_all,1000g2014oct_all,1000g2014oct_eas,cosmic70,clinvar_20150629,avsnp142,ljb26_all,gwasCatalog -operation g,r,r,f,f,f,f,f,f,f,f,r 
+perl $annovar  ${in}.avinput $db  -nastring . -outfile $out.temp  -remove -otherinfo -protocol refGene,genomicSuperDups,phastConsElements46way,esp6500siv2_all,1000g2014oct_all,1000g2014oct_eas,cosmic70,clinvar_20150629,avsnp142,ljb26_all,gwasCatalog -operation g,r,r,f,f,f,f,f,f,f,r 
 
-#perl $annovar  ${in} $db  -nastring . -outfile $out.temp  -remove -otherinfo -protocol refGene,genomicSuperDups,phastConsElements46way,esp6500siv2_all,1000g2014oct_all,1000g2014oct_eas,cosmic70,clinvar_20150629,avsnp142,ljb26_all -operation g,r,r,f,f,f,f,f,f,f
-# $csvXtab -i "$out.temp.hg19_multianno.csv" > $out
+# new annovar version in software dir
+# annovar="/home/zzx/software/annovar/table_annovar.pl"
+# converter="/home/zzx/software/annovar/convert2annovar.pl"
+# db="/home/zzx/software/annovar/humandb/ -buildver hg19"
+# perl $annovar  ${in}.avinput $db  -nastring . -outfile $out.temp  -remove -otherinfo -protocol refGene,genomicSuperDups,phastConsElements46way,popfreq_all_20150413,1000g2015aug_all,avsnp142,cosmic70,clinvar_20160302,dbnsfp30a,gwasCatalog -operation g,r,r,f,f,f,f,f,f,r
+
+
 
 if [ "$out" == ".tmp.annovar" ];then
     cat "$out.temp.hg19_multianno.txt"

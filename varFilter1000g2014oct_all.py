@@ -74,7 +74,7 @@ def main():
     total=len(list)-1
     list=filter(list)
     after=len(list)-1
-    sys.stderr.write('1000 genome frequency filter: filter out snp with frequency higher than %f\nTotal number: %d\nAfter filter: %d\n' % (cutoff,total,after))
+    sys.stderr.write('1000 genome (1000g2014oct_all) frequency filter: filter out snp with frequency higher than %f\nTotal number: %d\nAfter filter: %d\n' % (cutoff,total,after))
 
     for line in list:
         ofs.write(line)
