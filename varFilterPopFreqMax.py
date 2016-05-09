@@ -2,13 +2,13 @@
 __author__ = 'Jason'
 '''
 Create   on: 20160125
-Modified on: 20160304
+Modified on: 20160304, 20160509
 '''
 import getopt
 import sys
 import string
 
-colName='1000g2012apr_all'
+colName='PopFreqMax'
 colEmpty='.'
 cutoff=0.05
 
@@ -74,7 +74,7 @@ def main():
     total=len(list)-1
     list=filter(list)
     after=len(list)-1
-    sys.stderr.write('1000 genome (1000g2012apr_all) frequency filter: filter out snp with frequency higher than %f\nTotal number: %d\nAfter filter: %d\n' % (cutoff,total,after))
+    sys.stderr.write('PopFreqMax (maximum allele frequency from 1000G, ESP6500, ExAC and CG46) frequency filter: filter out snp with frequency higher than %f\nTotal number: %d\nAfter filter: %d\n' % (cutoff,total,after))
 
     for line in list:
         ofs.write(line)

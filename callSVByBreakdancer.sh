@@ -14,6 +14,6 @@ fi
 /data/SG/Env/software_installed/breakdancer/perl/bam2cfg.pl ${in} > "${in}.cfg"
 # echo "-y: filter by score"
 /data/SG/Env/software_installed/breakdancer/build/bin/breakdancer-max -y $filterScore ${in}.cfg > ${out}
-# rm ${in}.cfg
+rm ${in}.cfg
 
 #cat ${out} | grep -Ev "^#" | awk -vScore="$filterScore" '{ if ($9>Score) { print $0} }' > "${out}.filter${filterScore}-sv.sv"
