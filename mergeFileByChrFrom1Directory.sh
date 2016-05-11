@@ -48,6 +48,8 @@ do
     chr_path=`bash -c "ls ${dir}/*.$line.* | head -1"`
     if [ ! -z "$header" ];then
         cat $chr_path   >>  $tmpfile
+    else
+        cat $chr_path | sed -n '2,$p' >> $tmpfile
     fi
 done
 
