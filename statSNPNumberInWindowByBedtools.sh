@@ -11,7 +11,7 @@
 #
 
 bedtools="/home/zzx/software/bedtools2/bin/bedtools"
-# genome chr length file
+# genome chr length file 两列：第一列chr，第二列length
 genomeFile="/home/zzx/ref/hg19.genomefile.txt"
 # window file generate by bdetools make windows
 windowFile="/home/zzx/ref/window.snp.bed"
