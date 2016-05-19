@@ -7,7 +7,7 @@ Ouput overlap line or not overlap line.
 This script consider whole line, not part fields of line
 f: first file path
 s: second file path
-t: -t output non-overlap line that the line in first file and not in second file
+t: -t output non-overlap line that the line in first file but not in second file
 Create   on: 20160412
 Modified on:
 '''
