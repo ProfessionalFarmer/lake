@@ -58,7 +58,7 @@ Start working\n''')
                 filter_num+=1
                 continue
             else:
-                ofs.write(ref_line+'\n')
+                ofs.write(line)
         else:
             filter_num+=1
             continue
