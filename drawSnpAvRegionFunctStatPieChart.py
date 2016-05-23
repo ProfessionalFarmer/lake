@@ -23,7 +23,7 @@ def getopts():
         print '''
         program.py -i <INPUT> -o <OUTPUT> -m MODE
         Support stdin
-        MODE 1 Stat snp in whole genome region, 2 Stat snp function in whole exome sequencing, 3 for both
+        MODE 1 Stat snp in whole genome region, 2 Stat snp function in whole exome sequencing, 3 for both. Dafault is 3 for both
         '''
         sys.exit()
 
