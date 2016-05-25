@@ -179,6 +179,7 @@ def main():
     ofs=open(script_path,'w')
     ofs.write(script)
     ofs.flush()
+    ofs.close() # fix bug: Text file busy
     os.system('chmod 755 '+script_path)
     os.system(script_path)
     os.system('rm '+ script_path)
