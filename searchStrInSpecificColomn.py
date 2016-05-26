@@ -15,10 +15,14 @@ col_sep='\t'
 def main():
     #sys.argv=['','-i',u'C:\\Users\\Administrator\\Desktop\\tst.vcf']
     try:
-        opts,args = getopt.getopt(sys.argv[1:],"i:o:r:c:",[''])
+        opts,args = getopt.getopt(sys.argv[1:],"i:o:r:c:f",[''])
     except getopt.GetoptError:
         print '''
         program.py
+        i input
+        o output
+        r reflist
+        f fuzzy search mode, consume efficiency
         Support stdin and sdtout.
 
         '''
@@ -26,6 +30,7 @@ def main():
     ifs,ofs=sys.stdin,sys.stdout
     rs_set=set()
     col=[2]
+    is_fuzzy_match=False
     for key,value in opts:
         if key in ('-i'):
             ifs=open(value,'r')
@@ -42,11 +47,20 @@ def main():
             for line in open(value,'r'):
                 rs_set.add(line.strip())
             continue
+        if key in ('-f'):
+	    is_fuzzy_match=True
+	    continue    
     for line in ifs:
         l_list=line.strip().split(col_sep)
         for col_tmp in col:
             if len(l_list)< col_tmp: continue
-            if l_list[col_tmp-1].strip() in rs_set:
+	    if is_fuzzy_match:
+		for ele in rs_set:
+		    if ele in l_list[col_tmp-1].strip():
+			print line
+			break
+            else :
+		if l_list[col_tmp-1].strip() in rs_set:
                 print line,
                 break
     ofs.flush()
@@ -54,3 +68,6 @@ def main():
 
 if __name__=='__main__':
     main()
+
+
+
