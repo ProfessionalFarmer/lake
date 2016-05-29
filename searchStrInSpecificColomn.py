@@ -61,8 +61,8 @@ def main():
 			break
             else :
 		if l_list[col_tmp-1].strip() in rs_set:
-                print line,
-                break
+                    print line,
+                    break
     ofs.flush()
     ofs.close()
 
