@@ -14,3 +14,6 @@ expect {
  "password:" {send "123456\r";exp_continue}
 }
 wait
+
+send_user "scp work done\n"
+
