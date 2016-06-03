@@ -1,10 +1,17 @@
-#!/usr/bin/expect
+#! /bin/bash
+
+sourcedir=$1
+desdir=$2
+
+echo -e "\n##########\n`date`: Start scp $1 $2\n"
+
+# run expect
+/usr/bin/expect <<EOF
 
 #设置超时时间为1秒
 set timeout -1
-set sourcedir [lindex $argv 0]  
-set desdir [lindex $argv 1]  
-
+#set sourcedir [lindex $argv 0]  
+#set desdir [lindex $argv 1]  
 
 spawn scp -r $sourcedir $desdir
 expect {
@@ -16,4 +23,7 @@ expect {
 wait
 
 send_user "scp work done\n"
+EOF
+
+echo -e "\n###########\n`date`: End scp $1 $2\n"
 
