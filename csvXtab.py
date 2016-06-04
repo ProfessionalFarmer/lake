@@ -31,6 +31,7 @@ def readLine(path,isExsitCSVFile):
             reader = csv.reader(open(path, 'rb'))
             for line in reader:
                 yield line
+        return
     for line in csv.reader(sys.stdin):
         yield line
 
