@@ -10,6 +10,7 @@ import sys
 
 col_sep='\t'
 gene_symbol_col='Gene.refGene'
+empty_col_str='.'
 #通常在第七列，以0开始，就在第六列
 default_gene_symbol_col=6
 # 可以通过getGeneStrandInfoFromGff.sh 得到
@@ -49,7 +50,7 @@ def main():
         gene_strand_map[line.split('\t')[0].strip()]=line.split('\t')[1].strip()
         gene_symbol_set.add(line.split('\t')[0].strip())
 
-    sys.stderr.write(u'\n###########\n请注意，所添加的正负链信息可能不准确\n##############\n')
+    sys.stderr.write(u'\n###########\n请注意，所添加的正负链信息可能不准确\n##############\n\n')
     for line in ifs:
 	# do not ignore that stdin will read '\n', so right strip 
         line=line.rstrip('\n')
@@ -57,11 +58,14 @@ def main():
             ofs.write(line+'\tStrand\n')
             default_gene_symbol_col=line.split('\t').index(gene_symbol_col)
             continue
-        gene_symbol=line.split('\t')[default_gene_symbol_col]
-        if gene_symbol in gene_symbol_set:
-            ofs.write(line+'\t'+gene_strand_map[gene_symbol]+'\n')
-        else:
-            ofs.write(line+'\t.\n')
+	strand=''
+	for gene_symbol in line.split('\t')[default_gene_symbol_col].split(','):
+	    if gene_symbol in gene_symbol_set:
+		strand=strand+gene_strand_map[gene_symbol]+','
+	    else:
+		strand=strand+'.,'
+	strand=strand.strip(',')
+	ofs.write(line+'\t'+strand+'\n')
     ofs.flush()
     ofs.close()
 

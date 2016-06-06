@@ -1,5 +1,6 @@
 #! /bin/bash
 # input gff file from NCBI: ftp://ftp.ncbi.nih.gov/genomes/H_sapiens/ARCHIVE/BUILD.37.3/GFF/ref_GRCh37.p5_top_level.gff3.gz
+# Gff file can also download from http://genome.ucsc.edu/cgi-bin/hgTables  use refflat
 
 if [ -f ./.strand.tmp ];then
     rm ./.strand.tmp
