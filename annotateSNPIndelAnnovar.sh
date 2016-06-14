@@ -34,7 +34,7 @@ db="/home/zzx/software/annovar/humandb/ -buildver hg19"
 
 perl $converter -format vcf4 --withzyg $in > ${in}.avinput
 
-perl $annovar  ${in}.avinput $db  -nastring . --thread 8 -outfile $out.temp  -remove -otherinfo -protocol refGene,genomicSuperDups,phastConsElements46way,popfreq_all_20150413,1000g2015aug_all,avsnp142,cosmic70,clinvar_20160302,dbnsfp30a,gwasCatalog -operation g,r,r,f,f,f,f,f,f,r
+perl $annovar  ${in}.avinput $db  -nastring . --thread 8 -outfile $out.temp  -remove -otherinfo -protocol refGene,genomicSuperDups,phastConsElements46way,popfreq_all_20150413,1000g2015aug_all,avsnp142,cosmic70,clinvar_20160302,dbnsfp30a,gwasCatalog -operation g,r,r,f,f,f,f,f,f,r > /dev/null
 
 
 if [ "$out" == ".tmp.annovar" ];then
