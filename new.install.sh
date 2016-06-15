@@ -3,10 +3,26 @@
 # accumulating always
 # 装机必备？？哈
 
+if [ ! -d "~/software" ];then
+    mkdir "~/software"
+fi
+
+# 2016-06-15
+# http://www.zlib.net/pigz/  A parallel implementation of gzip for modern multi-processor, multi-core machines
+wget -P ~/software/ http://zlib.net/pigz/pigz-2.3.3.tar.gz
+tar -xvzf ~/software/pigz-2.3.3.tar.gz
+sed  -i.bak 's#-lpthread -lm#-lpthread -lm -lz#'  ~/software/pigz-2.3.3/Makefile
+cd ~/software/pigz-2.3.3
+make
+echo -e "\nalias gzip='~/software/pigz-2.3.3/pigz'"  > ~/.bashrc
+source ~/.bashrc
+
+
+# 2016-06-14
 # browser website
 sudo apt-get install w3m
 
-# 2016-06-14
+# 2016-06-04
 # multiple paralle gzip
 sudo apt-get install pigz
 
