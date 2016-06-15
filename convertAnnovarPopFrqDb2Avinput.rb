@@ -15,6 +15,11 @@ end
 while line = file.gets
     line = line.chomp
     t=line.split("\t")
+
+    # do not consider multiple allele
+    if t[4].include?","  then
+        next
+
     if t[3].length==1 and t[4].length==1
         #1	36587318	36587318	-	A
         #1	36587318	36587318	T	A
