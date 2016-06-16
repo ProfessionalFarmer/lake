@@ -13,7 +13,7 @@ done
 cat "./.line.repeat.num.tmp" | awk '{a[$0]++}\
 	END{for (i in a )\
 	    print a[i]"\t"i
-	}' | sort -n -k 1
+	}' | sort -n -r -k 1
 
 rm "./.line.repeat.num.tmp"
 
