@@ -17,6 +17,11 @@ make
 echo -e "\nalias gzip='~/software/pigz-2.3.3/pigz'"  > ~/.bashrc
 source ~/.bashrc
 
+# file manager文件管理器，方便查看文件
+sudo apt-get install ranger
+
+# more power than top command 
+sudo apt-get install htop
 
 # 2016-06-14
 # browser website
@@ -33,11 +38,6 @@ sudo apt-get install tree
 # https://www.jefftk.com/icdiff
 curl -s https://raw.githubusercontent.com/jeffkaufman/icdiff/release-1.8.1/icdiff | sudo tee /usr/local/bin/icdiff > /dev/null && sudo chmod ugo+rx /usr/local/bin/icdiff
 
-# file manager文件管理器，方便查看文件
-sudo apt-get install ranger
-
-# more power than top command 
-sudo apt-get install htop
 
 
 
