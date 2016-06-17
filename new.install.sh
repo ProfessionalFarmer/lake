@@ -7,6 +7,15 @@ if [ ! -d "~/software" ];then
     mkdir "~/software"
 fi
 
+#2016-06-16
+# isntall ggplot2
+sudo R
+install.packages("ggplot2")
+# if package is not available, run the following command line
+#install.packages("lubridate", dependencies=TRUE, repos='http://cran.rstudio.com/')
+# or sudo apt-get install r-cran-ggplot2
+# or update R version  sudo apt-get update && sudo apt-get install r-base
+
 # 2016-06-15
 # http://www.zlib.net/pigz/  A parallel implementation of gzip for modern multi-processor, multi-core machines
 wget -P ~/software/ http://zlib.net/pigz/pigz-2.3.3.tar.gz

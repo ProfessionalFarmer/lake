@@ -37,6 +37,7 @@ def prepareGenomeRegionData(list):
             continue
         else:
             type=t[index].strip()
+	    if type==empty_col: continue
             if type in map.keys():
                 map[type]=map[type]+1
             else:
