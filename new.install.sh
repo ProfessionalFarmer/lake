@@ -14,7 +14,19 @@ install.packages("ggplot2")
 # if package is not available, run the following command line
 #install.packages("lubridate", dependencies=TRUE, repos='http://cran.rstudio.com/')
 # or sudo apt-get install r-cran-ggplot2
-# or update R version  sudo apt-get update && sudo apt-get install r-base
+# or update R version  sudo apt-get update && sudo apt-get install r-base r-base-dev
+
+# update date R base version 更新R版本
+version=`lsb_release -c -s`
+sudo echo "deb http://mirrors.aliyun.com/CRAN/bin/linux/ubuntu/ $version/" >>/etc/apt/sources.list
+# Fetch the secure APT key from server
+gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
+# Feed it to apt-key
+gpg -a --export E084DAB9 | sudo apt-key add -
+# 
+sudo apt-get update
+sudo apt-get install r-base
+
 
 # 2016-06-15
 # http://www.zlib.net/pigz/  A parallel implementation of gzip for modern multi-processor, multi-core machines
