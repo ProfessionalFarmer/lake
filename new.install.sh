@@ -41,11 +41,11 @@ source ~/.bashrc
 # file manager文件管理器，方便查看文件
 sudo apt-get install ranger
 
-# more power than top command 
+# more powful than top command, interactive process viewer 
 sudo apt-get install htop
 
 # 2016-06-14
-# browser website
+# website browser 
 sudo apt-get install w3m
 
 # 2016-06-04
