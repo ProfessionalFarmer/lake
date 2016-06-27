@@ -13,6 +13,7 @@ wget https://github.com/arq5x/bedtools2/releases/download/v2.25.0/bedtools-2.25.
 tar -zxvf ~/software/bedtools-2.25.0.tar.gz
 cd ~/software/bedtools2
 make
+ln -s ~/software/bedtools2/bin/bedtools ~/bin/bedtools
 # or apt-get install bedtools
 
 
