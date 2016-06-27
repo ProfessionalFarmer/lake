@@ -7,6 +7,16 @@ if [ ! -d "~/software" ];then
     mkdir "~/software"
 fi
 
+#2016-06-27
+# install bedtools
+wget https://github.com/arq5x/bedtools2/releases/download/v2.25.0/bedtools-2.25.0.tar.gz -P ~/software
+tar -zxvf ~/software/bedtools-2.25.0.tar.gz
+cd ~/software/bedtools2
+make
+# or apt-get install bedtools
+
+
+
 #2016-06-16
 # isntall ggplot2
 sudo R
