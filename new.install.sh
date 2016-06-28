@@ -16,7 +16,10 @@ make
 ln -s ~/software/bedtools2/bin/bedtools ~/bin/bedtools
 # or apt-get install bedtools
 
-
+#Axel是命令行下的多线程下载工具，支持断点续传，速度通常情况下是Wget的几倍。
+#下载地址：http://wilmer.gaast.net/main.php/axel.html
+sudo apt-get install axel
+# usage: axel -n 7 -p -o ./ url
 
 #2016-06-16
 # isntall ggplot2
