@@ -7,6 +7,16 @@ if [ ! -d "~/software" ];then
     mkdir "~/software"
 fi
 
+#2016-07-15
+#install useq
+cd ~/software
+git clone https://github.com/HuntsmanCancerInstitute/USeq.git
+cd USeq
+mkdir Classes
+ant
+# usage
+#java -Xmx10G -jar /home/zzx/software/USeq/Releases/USeq_9.0.2.beta/Apps/VCFComparator -a project.NIST.hc.snps.indels.vcf -c ./NIST7035.filter.revised.vcf -g -e -p /home/zzx/test/compare/  -b shared_sure_sure.bed
+
 #2016-06-27
 # install bedtools
 wget https://github.com/arq5x/bedtools2/releases/download/v2.25.0/bedtools-2.25.0.tar.gz -P ~/software

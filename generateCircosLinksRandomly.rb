@@ -26,9 +26,6 @@ for i in 1..max_num
     l1=rand(chr_len[c1]+1)
     l2=rand(chr_len[c2]+1)
     puts format("%s %d %d %s %d %d",c1,l1,l1,c2,l2,l2)
-             
 end
-
-
 
 
