@@ -4,6 +4,7 @@
 amy_tree="/home/zzx/software/amytree/AMY-tree_v2.0.pl"
 tree_file="/home/zzx/software/amytree/UpdatedTree_v2.1.txt"
 conversion_file="/home/zzx/software/amytree/MutationConversion_v2.1.txt"
+# http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chrY.fa.gz
 y_fa="/home/zzx/ref/chrY.fa"
 get_status="/home/zzx/software/amytree/getStatusReference.pl"
 quality_control_file="/home/zzx/software/amytree/qualityControl_v2.0.txt"
