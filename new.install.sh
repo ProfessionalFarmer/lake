@@ -7,6 +7,23 @@ if [ ! -d "~/software" ];then
     mkdir "~/software"
 fi
 
+#2016-07-21
+# bcftools  http://samtools.github.io/bcftools/ 
+#The most up to date (development) version of BCFtools and SAMtools can be obtained from github using these commands:
+git clone --branch=develop git://github.com/samtools/htslib.git
+git clone --branch=develop git://github.com/samtools/bcftools.git
+git clone --branch=develop git://github.com/samtools/samtools.git
+cd bcftools; make
+cd ../samtools; make
+#The clone command above is used to create a local copy of the remote repository and needs to be run only once. Whenever the latest snapshot from github is needed, use instead the pull command:
+cd htslib; git pull
+cd ../bcftools; git pull
+make clean
+make
+cd ../samtools; git pull
+make
+
+
 #2016-07-15
 #install useq
 cd ~/software

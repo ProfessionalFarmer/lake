@@ -15,7 +15,7 @@ col_sep='\t'
 def main():
     #sys.argv=['','-i',u'C:\\Users\\Administrator\\Desktop\\tst.vcf']
     try:
-        opts,args = getopt.getopt(sys.argv[1:],"i:o:r:c:f",[''])
+        opts,args = getopt.getopt(sys.argv[1:],"i:o:r:c:fb",[''])
     except getopt.GetoptError:
         print '''
         program.py
@@ -23,6 +23,7 @@ def main():
         o output
         r reflist
         f fuzzy search mode, consume efficiency
+	b reverse output
         Support stdin and sdtout.
 
         '''
@@ -31,6 +32,7 @@ def main():
     rs_set=set()
     col=[2]
     is_fuzzy_match=False
+    is_reverse=False
     for key,value in opts:
         if key in ('-i'):
             ifs=open(value,'r')
@@ -49,20 +51,32 @@ def main():
             continue
         if key in ('-f'):
 	    is_fuzzy_match=True
-	    continue    
+	    continue   
+        if key in ('-b'):
+            is_reverse=True
+            continue
     for line in ifs:
+        is_print=False
         l_list=line.strip().split(col_sep)
         for col_tmp in col:
             if len(l_list)< col_tmp: continue
 	    if is_fuzzy_match:
 		for ele in rs_set:
 		    if ele in l_list[col_tmp-1].strip():
-			print line
-			break
+			is_print=True
+			if not is_reverse:
+			    print line,
+			    break
+			
             else :
 		if l_list[col_tmp-1].strip() in rs_set:
-                    print line,
-                    break
+		    is_print=True
+		    if not is_reverse:
+                        print line,
+                        break
+	if is_reverse and not is_print: 
+            print line,
+
     ofs.flush()
     ofs.close()
 
