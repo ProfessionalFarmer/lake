@@ -18,7 +18,7 @@ cat "$1" | grep "^#" > .header.vcf
 cat "$1" | grep -v "^#" | sort -k1,1 -k2,2n > .pre.sorted.vcf
 echo -e $chr_order | while read line
 do
-    cat .pre.sorted.vcf | grep "^$line"$'\t' >> .header.vcf
+    cat .pre.sorted.vcf | grep "$line"$'\t' >> .header.vcf
 done
 
 cat .header.vcf && rm .header.vcf .pre.sorted.vcf

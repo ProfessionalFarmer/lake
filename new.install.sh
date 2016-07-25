@@ -7,6 +7,13 @@ if [ ! -d "~/software" ];then
     mkdir "~/software"
 fi
 
+# 2016-07-22
+# bedops
+cd ~/softawre/
+wget -c https://github.com/bedops/bedops/releases/download/v2.4.19/bedops_linux_x86_64-v2.4.19.tar.bz2
+tar jxvf bedops_linux_i386-v2.4.19.tar.bz2
+
+
 #2016-07-21
 # bcftools  http://samtools.github.io/bcftools/ 
 #The most up to date (development) version of BCFtools and SAMtools can be obtained from github using these commands:
