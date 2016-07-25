@@ -10,8 +10,12 @@ fi
 # 2016-07-22
 # bedops
 cd ~/softawre/
+mkdir bedops
+cd bedops
 wget -c https://github.com/bedops/bedops/releases/download/v2.4.19/bedops_linux_x86_64-v2.4.19.tar.bz2
 tar jxvf bedops_linux_i386-v2.4.19.tar.bz2
+# convert gff to bed
+# ./gff2bed < ~/ref/ref_GRCh37.p5_top_level.gff3
 
 
 #2016-07-21
