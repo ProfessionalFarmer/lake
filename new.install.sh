@@ -7,6 +7,10 @@ if [ ! -d "~/software" ];then
     mkdir "~/software"
 fi
 
+# 2016-07-28
+# bowtie2
+sudo apt-get install bowtie2
+
 # 2016-07-22
 # bedops
 cd ~/softawre/
