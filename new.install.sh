@@ -7,6 +7,10 @@ if [ ! -d "~/software" ];then
     mkdir "~/software"
 fi
 
+# 2016-08-01
+# 包含read_distribution脚本，统计flank，cds等read覆盖
+pip install RSeQC
+
 # 2016-07-28
 # bowtie2
 sudo apt-get install bowtie2

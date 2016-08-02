@@ -29,7 +29,7 @@ echo "`date`: get status"
 perl ${get_status}  ${y_fa}  $2/chrY.convert  hg19 $2/.status.Y.txt
 
 echo "`date`: working"
-perl $amy_tree  $2/chrY.convert  ${2}/  ${tree_file}  ${conversion_file} ${y_fa}  $2/status.Y.txt ${quality_control_file}  hg19
+perl $amy_tree  $2/chrY.convert  ${2}/  ${tree_file}  ${conversion_file} ${y_fa}  $2/.status.Y.txt ${quality_control_file}  hg19
 
 rm $2/chrY.convert   $2/.status.Y.txt
 
