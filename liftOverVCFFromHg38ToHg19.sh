@@ -39,7 +39,7 @@ if [ -z $in ] ;then
 fi
 
 
-
+# output file must suffix with vcf, this will tell picard the output format
 java -jar $picard LiftoverVcf \
      I=$in \
      O=$in.out.vcf \
