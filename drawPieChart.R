@@ -29,18 +29,25 @@ blank_theme <- theme_minimal()+
 
 
 df=read.table(args[6],header=TRUE,sep="\t")
+# get header name
+group=colnames(df)[2]
+value=colnames(df)[1]
+# rename header
+colnames(df)=c("Value","Group")
+
 bp<- ggplot(df, aes(x="", y=Value, fill=Group)) + geom_bar(width = 1, stat = "identity")
-pie <- bp + coord_polar("y", start=0) 
+# convert to pie and add legend title
+pie <- bp + coord_polar("y", start=0) + guides(fill=guide_legend(title=group))
 
 # 当类型小于8个的时候，这个颜色比较好看use brewer color palettes 
 # pie <- pie + scale_fill_brewer(palette="Dark2") 
 
 fig = pie + blank_theme +  theme(axis.text.x=element_blank()) 
 
+# draw
 png(filename=args[7],width=2800,height=1600,units = "px",res=300)
 # 如果不加print，则不输出图片
 print(fig)
-
 dev.off()
 
 }
