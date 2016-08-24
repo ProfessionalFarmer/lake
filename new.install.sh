@@ -7,6 +7,17 @@ if [ ! -d "~/software" ];then
     mkdir "~/software"
 fi
 
+# 2016-08-24
+# install HTSeq
+sudo apt-get install build-essential python2.7-dev python-numpy python-matplotlib
+cd ~/software
+wget -c https://pypi.python.org/packages/72/0f/566afae6c149762af301a19686cd5fd1876deb2b48d09546dbd5caebbb78/HTSeq-0.6.1.tar.gz#md5=b7f4f38a9f4278b9b7f948d1efbc1f05
+tar -xvzf HTSeq-0.6.1.tar.gz 
+cd HTSeq-0.6.1/
+# to install HTSeq for the user currently logged in
+python setup.py install --user
+
+
 # 2016-08-01
 # 包含read_distribution脚本，统计flank，cds等read覆盖
 pip install RSeQC
