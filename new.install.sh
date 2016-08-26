@@ -7,6 +7,23 @@ if [ ! -d "~/software" ];then
     mkdir "~/software"
 fi
 
+# 2016-08-26
+# install EMBOSS
+ver="6.6.0"
+cd ~/software
+wget -N ftp://emboss.open-bio.org/pub/EMBOSS/EMBOSS-$ver.tar.gz
+tar -zxvf EMBOSS-$ver.tar.gz
+cd EMBOSS-$ver
+./configure
+make
+sudo ldconfig
+sudo make install
+#Libraries have been installed in: /usr/local/lib
+cd ..
+rm EMBOSS-$ver/ -rf
+#Configuration files were installed to /usr/local/share/EMBOSS/
+
+
 # 2016-08-24
 # install HTSeq
 sudo apt-get install build-essential python2.7-dev python-numpy python-matplotlib
