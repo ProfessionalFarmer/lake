@@ -32,12 +32,14 @@ use Getopt::Long;
 my $extended;
 GetOptions("x"=>\$extended);
 
-$in = shift @ARGV;
+# I comment a few lines below, in order to read stdin from terminal when no argument. But This modification can not read gz file. ZZX
+#$in = shift @ARGV;
 
-my $in_cmd =($in =~ /\.gz$/ ? "gunzip -c $in|" : $in =~ /\.zip$/ ? "unzip -p $in|" : "$in") || die "Can't open $in: $!\n";
-open IN, $in_cmd;
+#my $in_cmd =($in =~ /\.gz$/ ? "gunzip -c $in|" : $in =~ /\.zip$/ ? "unzip -p $in|" : "$in") || die "Can't open $in: $!\n";
+#open IN, $in_cmd;
 
-while (<IN>) {
+while (<>) {    # modify by ZZX
+#while (<IN>) {
 	$gff = 2 if /^##gff-version 2/;
 	$gff = 3 if /^##gff-version 3/;
 	next if /^#/ && $gff;
