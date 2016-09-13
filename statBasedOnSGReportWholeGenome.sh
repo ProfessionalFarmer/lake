@@ -28,9 +28,11 @@ for var in $list;do
    fi
    if [[ $var =~ ^1134=* ]];then
        raw_q20=`echo $var | cut -d "=" -f 2 `
+       raw_q20=${raw_q20:0:3}
    fi 
    if [[ $var =~ ^1135=* ]];then
        raw_q30=`echo $var | cut -d "=" -f 2 `
+       raw_q30=${raw_q30:0:3}
    fi
    if [[ $var =~ ^1011=* ]];then
        raw_gc=`echo $var | cut -d "=" -f 2 `

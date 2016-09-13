@@ -3,7 +3,7 @@
 # 
 # $1: bedtools coverage output file should be in the same directory
 # file should suffix with "hist.all.txt$"
-# input file from: bedtools coverage -hist -abam  samp.01.bam -b target_regions.bed | grep ^all > samp.01.bam.hist.all.txt
+# input file from: bedtools coverage -hist -abam  samp.01.bam -b target_regions.bed | grep ^all > samp.01.bam.hist.all.txt  or bedtools genomecov -ibam ../merge.bam -g genome.file.txt | grep ^genome > genome.cov
 # $2: png figure output path
 # Ref: http://www.gettinggeneticsdone.com/2014/03/visualize-coverage-exome-targeted-ngs-bedtools.html
 
