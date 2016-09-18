@@ -11,7 +11,6 @@
 
 
 varscan="/data3/zzx-temp/VarScan.v2.4.1.jar"
-#varscan="/data/SG/Env/software_installed/VarScan.jar"
 samtools="/data/SG/Env/software_installed/samtools-1.2/samtools"
 hgRef="/data/SG/Env/reference_data/ucsc.hg19.fasta"
 sampleName='Sample'
