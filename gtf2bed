@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
 # download from https://expressionanalysis.github.io/ea-utils/ 
-# another tools is bedops: ./gff2bed < ~/ref/ref_GRCh37.p5_top_level.gff3
+# another tools is bedops: ./gtf2bed < ~/ref/ref_GRCh37.p5_top_level.gff3
 # this tool's result is suitable for HTSeq read_distribution.py, but I think bedops is more than expect
 #
 # Copyright (c) 2011 Erik Aronesty (erik@q32.com)

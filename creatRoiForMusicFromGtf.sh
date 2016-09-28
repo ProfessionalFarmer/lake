@@ -21,3 +21,22 @@ perl -ane '$F[1]--; $F[2]+=2; print join("\t",@F[0..3])."\n";' .tmp.all_exon_loc
 
 rm .tmp.all*
 
+<<BLOCK
+cat ~/Homo_sapiens.GRCh38.85.gtf  | \
+grep -v "^#" | \
+grep 'exon'  | \
+awk -F '\t' 'BEGIN{OFS="\t"}{split($9,a,"gene_name"); split(a[2],a,";"); gsub("\"", "", a[1]); gsub(" ", "", a[1]); printf ("%s\t%s\t%s\t%s\t.\t%s\n",$1,$4,$5,a[1],$7)}' > exon.bed &
+
+ ~/software/bedtools2/bin/bedtools flank -b 2 -i exon.bed  -g genomefile > flank.bed
+
+# 还要考虑第三列的位置小于第二的情况
+cat exon.bed flank.bed | awk -F '\t' '{if($3<$2){printf ("%s\t%s\t%s\t%s\t%s\t%s\n",$1,$3,$2,$4,$5,$6)} else{print $0}}' |sort -k1,1 -k2,2n > all.bed
+
+~/software/bedtools2/bin/mergeBed -s -c 4 -o distinct -i all.bed  -delim ";" | perl -pe 's/;.*//' | cut -f 1-3,5 > all_exon_loci.merged.bed
+
+Error: Invalid record in file 检查起始位置和终止位置的大小
+
+BLOCK
+
+
+
