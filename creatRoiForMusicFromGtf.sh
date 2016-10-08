@@ -7,7 +7,7 @@
 # output to stdout
 # another method is 1. grep exon 2. use bedtools flank 3. use bedtools merge
 
-
+# bedtools merge
 mergebed='/home/zzx/software/bedtools2/bin/mergeBed'
 
 perl -ne 'chomp; @c=split(/\t/); $c[3]--; $c[8]=~s/.*gene_name\s\"([^"]+)\".*/$1/; print join("\t",@c[0,3,4,8,5,6])."\n" if($c[2] eq "CDS" or $c[2] eq "exon")' $1 | sort -k1,1 -k2,2n  > .tmp.all_exon_loci.bed
@@ -32,6 +32,7 @@ awk -F '\t' 'BEGIN{OFS="\t"}{split($9,a,"gene_name"); split(a[2],a,";"); gsub("\
 # 还要考虑第三列的位置小于第二的情况
 cat exon.bed flank.bed | awk -F '\t' '{if($3<$2){printf ("%s\t%s\t%s\t%s\t%s\t%s\n",$1,$3,$2,$4,$5,$6)} else{print $0}}' |sort -k1,1 -k2,2n > all.bed
 
+# bedtools merge
 ~/software/bedtools2/bin/mergeBed -s -c 4 -o distinct -i all.bed  -delim ";" | perl -pe 's/;.*//' | cut -f 1-3,5 > all_exon_loci.merged.bed
 
 Error: Invalid record in file 检查起始位置和终止位置的大小

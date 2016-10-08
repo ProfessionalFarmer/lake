@@ -7,6 +7,29 @@ if [ ! -d "~/software" ];then
     mkdir "~/software"
 fi
 
+# 2016-09-29
+# install pharmCAT
+cd ~/software
+git clone https://github.com/PharmGKB/PharmCAT.git
+cd PharmCAT
+./gradlew shadowJar
+cd ..
+mkdir definition
+cd definition
+wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/CFTR_translation.json
+wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/CYP2C19_translation.json
+wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/CYP2C9_translation.json
+wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/CYP3A5_translation.json
+wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/DPYD_translation.json
+wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/IFNL3_translation.json
+wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/SLCO1B1_translation.json
+wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/TPMT_translation.json
+wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/UGT1A1_translation.json
+wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/VKORC1_translation.json
+cd ../PharmCAT
+# java -cp build/libs/pharmcat-*-all.jar org.pharmgkb.pharmcat.haplotype.NamedAlleleMatcher -d <definition_dir> -vcf <vcf_file> -html <html_file>
+
+
 # 2016-08-26
 # install EMBOSS
 ver="6.6.0"
