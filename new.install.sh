@@ -16,16 +16,8 @@ cd PharmCAT
 cd ..
 mkdir definition
 cd definition
-wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/CFTR_translation.json
-wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/CYP2C19_translation.json
-wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/CYP2C9_translation.json
-wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/CYP3A5_translation.json
-wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/DPYD_translation.json
-wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/IFNL3_translation.json
-wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/SLCO1B1_translation.json
-wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/TPMT_translation.json
-wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/UGT1A1_translation.json
-wget -c https://raw.githubusercontent.com/PharmGKB/cpic-data/master/generatedDefinitions/VKORC1_translation.json
+wget -c https://www.pharmgkb.org/download.do?objId=dosingGuidelines.json.zip&dlCls=common
+unzip dosingGuidelines.json.zip
 cd ../PharmCAT
 # java -cp build/libs/pharmcat-*-all.jar org.pharmgkb.pharmcat.haplotype.NamedAlleleMatcher -d <definition_dir> -vcf <vcf_file> -html <html_file>
 
