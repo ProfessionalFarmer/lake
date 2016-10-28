@@ -24,6 +24,7 @@ def main():
         r reflist
         f fuzzy search mode, consume efficiency
 	b reverse output
+        c colomn index 1-based
         Support stdin and sdtout.
 
         '''

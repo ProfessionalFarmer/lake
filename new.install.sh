@@ -11,15 +11,21 @@ fi
 # install pharmCAT
 cd ~/software
 git clone https://github.com/PharmGKB/PharmCAT.git
+
 cd PharmCAT
 ./gradlew shadowJar
-cd ..
+
 mkdir definition
 cd definition
-wget -c https://www.pharmgkb.org/download.do?objId=dosingGuidelines.json.zip&dlCls=common
-unzip dosingGuidelines.json.zip
-cd ../PharmCAT
+wget -c https://github.com/PharmGKB/cpic-data/archive/v0.1.0.zip
+unzip v0.1.0.zip
+cd cpic-data-0.1.0/
+mv generatedDefinitions/* ../
+cd ..
+rm -rf cpic-data-0.1.0 v0.1.0.zip 
+cd ..
 # java -cp build/libs/pharmcat-*-all.jar org.pharmgkb.pharmcat.haplotype.NamedAlleleMatcher -d <definition_dir> -vcf <vcf_file> -html <html_file>
+
 
 
 # 2016-08-26
