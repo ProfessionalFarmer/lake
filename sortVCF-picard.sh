@@ -3,8 +3,8 @@
 
 reffa='/home/zhuz/ref/hg19/ucsc.hg19.fasta'
 reffadict='/home/zhuz/ref/hg19/ucsc.hg19.dict'
-picard='/src/picard-tools-1.124/picard.jar'
-gatk='/src/GenomeAnalysisTKLite-2.3-9-gdcdccbb/GenomeAnalysisTKLite.jar'
+picard='/share/apps/picard-tools-1.124/picard.jar'
+gatk='/share/apps/GenomeAnalysisTKLite-2.3-9-gdcdccbb/GenomeAnalysisTKLite.jar'
 #gatk='/src/GenomeAnalysisTK.jar'
 
 

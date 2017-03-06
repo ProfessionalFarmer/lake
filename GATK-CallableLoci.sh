@@ -2,7 +2,7 @@
 # Jason, 20161219
 
 #gatk='/src/GenomeAnalysisTKLite-2.3-9-gdcdccbb/GenomeAnalysisTKLite.jar'
-gatk='/src/GenomeAnalysisTK.jar'
+gatk='/share/apps/GenomeAnalysisTK-3.6/GenomeAnalysisTK.jar'
 reffa='/home/zhuz/ref/hg19/ucsc.hg19.fasta'
 
 # A very common question about a NGS set of reads is what areas of the genome are considered callable. This tool considers the coverage at each locus and emits either a per base state or a summary interval BED file that partitions the genomic intervals into the following callable states
