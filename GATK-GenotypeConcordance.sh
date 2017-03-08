@@ -2,7 +2,7 @@
 # Jason, 20161212
 
 #gatk='/src/GenomeAnalysisTKLite-2.3-9-gdcdccbb/GenomeAnalysisTKLite.jar'
-gatk='/src/GenomeAnalysisTK.jar'
+gatk='/share/apps/GenomeAnalysisTK-3.6/GenomeAnalysisTK.jar'
 reffa='/home/zhuz/ref/hg19/ucsc.hg19.fasta'
 
 # This tool takes in two callsets (vcfs) and tabulates the number of sites which overlap and share alleles, and for each sample, the genotype-by-genotype counts (e.g. the number of sites at which a sample was called homozygous-reference in the EVAL callset, but homozygous-variant in the COMP callset). It outputs these counts as well as convenient proportions (such as the proportion of het calls in the EVAL which were called REF in the COMP) and metrics (such as NRD and NRS).
@@ -37,6 +37,9 @@ if [[ -z "$evaluatateFile" || -z "$compareFile" ]];then
     echo "set evaluate file by -e option and set compare file by -c option"
     exit 1
 fi
+
+
+# filter field is related to avoid  UNAVAILABLE          UNAVAILABLE
 
 java -jar $gatk \
     -T GenotypeConcordance \
