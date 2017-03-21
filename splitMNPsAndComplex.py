@@ -6,7 +6,7 @@ chip calls, as these complex variants are generally treated as multiple SNPs in 
 calls.
 """
 # download from https://github.com/andyrimmer/Platypus/blob/master/scripts/splitMNPsAndComplex.py
-
+# Modified by ZZX: 20170320, mask a string 'FromComplex'
 import sys
 import gzip
 import os
@@ -22,7 +22,11 @@ def splitVariant(chrom, pos, theId, ref, alt, qual, filters, info, theRest):
     """
     for index,(refBase,altBase) in enumerate(zip(ref,alt)):
         if refBase != altBase:
-            yield "\t".join([chrom, str(pos+index), theId, refBase, altBase, qual, filters, "%s;%s" %(info,"FromComplex"), theRest])
+# this line will generate a string ';FromComplex', which lead GATK throw 
+# Key FromComplex found in VariantContext field INFO at chr2:21232803 but this key isn't defined in the VCFHeader.
+# so we need not print this string  20170320 
+#            yield "\t".join([chrom, str(pos+index), theId, refBase, altBase, qual, filters, "%s;%s" %(info,"FromComplex"), theRest])
+            yield "\t".join([chrom, str(pos+index), theId, refBase, altBase, qual, filters, info, theRest])
 
 ###################################################################################################
 
@@ -40,7 +44,11 @@ def splitMAVariant(chrom, pos, theId, ref, alts, qual, filters, info, theRest):
                 splitVars.add( (pos + index, refBase, altBase) )
 
     for thePos,theRef,theAlt in sorted(splitVars):
-        yield "\t".join([chrom, str(thePos), theId, theRef, theAlt, qual, filters, "%s;%s" %(info,"FromComplex"), theRest])
+# this line will generate a string ';FromComplex', which lead GATK throw 
+# Key FromComplex found in VariantContext field INFO at chr2:21232803 but this key isn't defined in the VCFHeader.
+# so we need not print this string 
+#        yield "\t".join([chrom, str(thePos), theId, theRef, theAlt, qual, filters, "%s;%s" %(info,"FromComplex"), theRest])
+        yield "\t".join([chrom, str(thePos), theId, theRef, theAlt, qual, filters, info, theRest])
 
 ###################################################################################################
 
