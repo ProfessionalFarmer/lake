@@ -1,5 +1,5 @@
 #! /bin/bash
-# Jason, 20161210. 20170310: Leftalign and split MNP. 
+# Jason, 20161210. 20170310: Leftalign and split MNP. 20170322: use vt package to split MNP
 #
 
 freebayes='/share/apps/freebayes/bin/freebayes'
@@ -11,13 +11,12 @@ bwa='/share/apps/bwa.kit/bwa'
 gatk='/share/apps/GenomeAnalysisTK-3.6/GenomeAnalysisTK.jar'
 interval='/home/zhuz/ref/trusight_cardio_manifest_a.bed'
 splitscript='/home/zhuz/lake/splitMNPsAndComplex.py'
+vt='/share/apps/vt/vt'
 smp=''
 dir=''
 STEP='all'
 fq1=''
 fq2=''
-
-STEP='3'
 
 while getopts "1:2:s:d:p:" arg ## arg is option
 do
@@ -151,7 +150,9 @@ java -jar $gatk \
     --variant ${dir}/${smp}.filter.vcf  \
     -o ${dir}/${smp}.leftalign.vcf
 
-cat ${dir}/${smp}.leftalign.vcf | python $splitscript > ${dir}/${smp}.leftalign-split.vcf 
+# obsolete when find vt package. use vt package instead. http://genome.sph.umich.edu/wiki/Vt
+# cat ${dir}/${smp}.leftalign.vcf | python $splitscript > ${dir}/${smp}.leftalign-split.vcf 
+$vt decompose_blocksub ${dir}/${smp}.leftalign.vcf > ${dir}/${smp}.leftalign-split.vcf
 
 java -jar $gatk \
     -T SelectVariants \

@@ -224,7 +224,7 @@ java -jar $gatk \
     -T VariantFiltration \
     -R $reffa \
     -V ${dir}/${smp}.raw_indels.vcf \
-    --filterExpression "DP <= 6 || QD < 2.0 || FS > 200.0 || SOR > 10.0 || MQ < 50.0 || MQ0 > 10 || (vc.hasAttribute('InbreedigCoeff') && InbreedigCoeff < -0.8) || (vc.hasAttribute('ReadPosRankSum') &&ReadPosRankSum < -20.0) " \
+    --filterExpression "DP <= 10 || QD < 2.0 || FS > 200.0 || SOR > 10.0 || MQ < 50.0 || MQ0 > 10 || (vc.hasAttribute('InbreedigCoeff') && InbreedigCoeff < -0.8) || (vc.hasAttribute('ReadPosRankSum') &&ReadPosRankSum < -20.0) " \
     --filterName "indel_hard_filter" \
     -o ${dir}/${smp}.filtered_indels.vcf
 
