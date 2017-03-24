@@ -55,14 +55,15 @@ if [ -z "$dir" ];then
     echo "Please set a output directory by -d option"
     exit 1
 fi
+
+if [ ! -d "$dir" ];then
+    mkdir $dir
+fi
 dir=${dir}/$smp
 if [ ! -d "$dir" ];then
     mkdir $dir
 fi
 
-if [ ! -d "$dir" ];then
-    mkdir "$dir"
-fi
 
 # build bwa fasta index 
 #$bwa index $reffa
