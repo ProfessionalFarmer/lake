@@ -59,6 +59,7 @@ fi
 if [ ! -d "$dir" ];then
     mkdir $dir
 fi
+inputdir=${dir}
 dir=${dir}/$smp
 if [ ! -d "$dir" ];then
     mkdir $dir
@@ -177,15 +178,17 @@ java -jar $gatk \
 #    -A StrandBiasBySample -A  
 
 
-# annotation list 
-# java -jar /share/apps/GenomeAnalysisTKLite-2.3-9-gdcdccbb/GenomeAnalysisTKLite.jar -T VariantAnnotator --list -V variant.vcf -R ~/ref
-#   -A StrandAlleleCountsBySample \
 #    --min_mapping_quality_score 20 \
 #    --min_base_quality_score 20 \
 #    -rf MappingQuality # rf read filter 
 
 # [ -L exome_targets.intervals  \]
 # -D or --dbsnp will add rsID in vcf file
+
+# annotation list 
+# java -jar /share/apps/GenomeAnalysisTKLite-2.3-9-gdcdccbb/GenomeAnalysisTKLite.jar -T VariantAnnotator --list -V variant.vcf -R ~/ref
+#   -A StrandAlleleCountsBySample \
+
 
 fi
 ###################################################################
@@ -211,12 +214,14 @@ java -jar $gatk \
 
 # apply hard filter
 echo "`date`: start filtering"
-# snp filter. Add DP<=6
+# snp filter. Add DP<=10
+# http://gatkforums.broadinstitute.org/gatk/discussion/2806/howto-apply-hard-filters-to-a-call-set
+# http://gatkforums.broadinstitute.org/gatk/discussion/3225/i-am-unable-to-use-vqsr-recalibration-to-filter-variants
 java -jar $gatk \
     -T VariantFiltration \
     -R $reffa \
     -V ${dir}/${smp}.raw_snps.vcf \
-    --filterExpression "DP <= 6 || QD < 2.0 || FS > 60.0 || MQ < 40.0 || (vc.hasAttribute('MQRankSum') && MQRankSum < -12.5) || (vc.hasAttribute('ReadPosRankSum') && ReadPosRankSum < -8.0) " \
+    --filterExpression "DP <= 10 || QD < 2.0 || FS > 60.0 || MQ < 40.0 || (vc.hasAttribute('MQRankSum') && MQRankSum < -12.5) || (vc.hasAttribute('ReadPosRankSum') && ReadPosRankSum < -8.0) " \
     --filterName "snp_hard_filter" \
     -o ${dir}/${smp}.filtered_snps.vcf
 
@@ -225,7 +230,7 @@ java -jar $gatk \
     -T VariantFiltration \
     -R $reffa \
     -V ${dir}/${smp}.raw_indels.vcf \
-    --filterExpression "DP <= 10 || QD < 2.0 || FS > 200.0 || SOR > 10.0 || MQ < 50.0 || MQ0 > 10 || (vc.hasAttribute('InbreedigCoeff') && InbreedigCoeff < -0.8) || (vc.hasAttribute('ReadPosRankSum') &&ReadPosRankSum < -20.0) " \
+    --filterExpression "DP <= 10 || QD < 2.0 || FS > 200.0 || (vc.hasAttribute('ReadPosRankSum') && ReadPosRankSum < -20.0) " \
     --filterName "indel_hard_filter" \
     -o ${dir}/${smp}.filtered_indels.vcf
 

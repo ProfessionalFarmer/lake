@@ -1,11 +1,13 @@
 #! /bin/bash
 
-trimmonmatic='/home/zhuz/software/Trimmomatic-0.36/trimmomatic-0.36.jar'
-adapter='/home/zhuz/software/Trimmomatic-0.36/adapters/miseq.txt'
+trimmonmatic='/share/apps/Trimmomatic-0.36/trimmomatic-0.36.jar'
+adapter='/share/apps/Trimmomatic-0.36/adapters/NexteraPE-PE.fa'
 fq1=''
 fq2=''
 smp=''
 out=''
+fqcheck='/home/zhuz/lake/mountain/check_fastq.py'
+
 
 while getopts "1:2:s:o:" arg ## arg is option
 do
@@ -49,10 +51,17 @@ if [ ! -d "$out" ];then
 fi
 
 
+gunzip -c $fq1 $fq2 | python $fqcheck > $out/$smp.fastq_stat.txt
+
 java -jar $trimmonmatic PE -threads 8 \
     $fq1 $fq2 \
     $out/$smp.clean.R1.fastq.gz $out/$smp.unpaired_R1.fastq.gz \
     $out/$smp.clean.R2.fastq.gz $out/$smp.unpaired_R2.fastq.gz \
     ILLUMINACLIP:$adapter:2:30:10:8:TRUE LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:36
+
+gunzip -c $out/$smp.clean.R1.fastq.gz $out/$smp.clean.R2.fastq.gz | python $fqcheck  >> $out/$smp.fastq_stat.txt
+
+rm $out/$smp.unpaired_R1.fastq.gz $out/$smp.unpaired_R2.fastq.gz
+
 
 

@@ -4,7 +4,8 @@
 
 reffa='/home/zhuz/ref/hg19/ucsc.hg19.fasta'
 bwa='/share/apps/bwa.kit/bwa'
-picard='/share/apps/picard-2.6.0/picard.jar'
+#picard='/share/apps/picard-2.6.0/picard.jar'
+picard='/share/apps/picard-tools-1.124/picard.jar'
 smp=''
 fq1=''
 fq2=''
@@ -59,10 +60,11 @@ fi
 if [ ! -d "$dir" ];then
     mkdir "$dir"
 fi
-dir=${dir}/${smp}/
-if [ ! -d "$dir" ];then
-    mkdir $dir
-fi
+
+#dir=${dir}/${smp}/
+#if [ ! -d "$dir" ];then
+#    mkdir $dir
+#fi
 
 # build bwa fasta index 
 #$bwa index $reffa
@@ -97,18 +99,20 @@ java -jar $picard CollectHsMetrics \
     R=$reffa BAIT_INTERVALS=${interval} TARGET_INTERVALS=${interval}
 
 java -jar $gatk -T CallableLoci -R $reffa \
-    -I ${dir}/${smp}.dedup_reads.bam -L $bedinterval \
-    --summary ${dir}/${smp}.callableloci.summary > ${dir}/.tmp.${smp}.callableloci.summary
-cat ${dir}/.tmp.${smp}.callableloci.summary >> ${dir}/${smp}.callableloci.summary
-rm ${dir}/.tmp.${smp}.callableloci.summary
+    -I ${dir}/${smp}.dedup_reads.bam -L $bedinterval -o ${dir}/${smp}.callable_status.bed \
+    --minDepth 20 --minMappingQuality 20 --minBaseQuality 20 \
+    --summary ${dir}/${smp}.callableloci.summary
+
+cat ${dir}/${smp}.callable_status.bed >> ${dir}/${smp}.callableloci.summary
+rm ${dir}/${smp}.callable_status.bed
 
 
 
-echo `date`> $statfile
-sed -n '6,9p'  ${dir}/${smp}.dedup_reads.bam.metrics.txt >> $statfile
-sed -n '6,9p'  ${dir}/${smp}.dedup_reads.bam.hs_metrics.txt >> $statfile 
+#echo `date`> $statfile
+#sed -n '6,9p'  ${dir}/${smp}.dedup_reads.bam.metrics.txt >> $statfile
+#sed -n '6,9p'  ${dir}/${smp}.dedup_reads.bam.hs_metrics.txt >> $statfile 
 
-if [ -z "$out" ];then
+if [ ! -z "$out" ];then
     mv ${dir}/${smp}.dedup_reads.bam $out
 fi
 
