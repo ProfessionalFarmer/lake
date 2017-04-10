@@ -21,7 +21,7 @@ for key,value in opts:
 if not rsFile:
     sys.stderr.write('Please set rs list file. One rs id per line')
     sys.exit(1)
-rslist=[rs.rstrip() for rs in open(rsFile,'r')]
+rslist=[rs.rstrip() for rs in open(rsFile,'r') if not rs.strip()=='']
 rsRefMap={rs:'' for rs in rslist}
 # two map combined
 # {rs:{base:count}}
@@ -41,6 +41,8 @@ for line in ifs:
             gt=llist[9].split(':')[0]
             rsRefMap[rs]=ref
             rsBaseCountMap=rsCountMap[rs]
+	    if not ref in rsBaseCountMap.keys():
+		rsBaseCountMap[ref] = 0
             gtMap=rsGtMap[rs]
             if gt=='1/1':
                 gtMap['1/1']=gtMap['1/1']+1
@@ -88,6 +90,7 @@ for rs in rslist:
     total=0
     for gt,count in gtMap.items():
         total=total+count
+    if total==0: total=1
     ofs.write('0/1\t%d\t%.3f\t1/1\t%d\t%.3f\t1/2\t%d\t%f\n'%(gtMap['0/1'],gtMap['0/1']/float(total),gtMap['1/1'],gtMap['1/1']/float(total),gtMap['1/2'],gtMap['1/2']/float(total)))
 
 

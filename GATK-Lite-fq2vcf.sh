@@ -65,6 +65,20 @@ if [ ! -d "$dir" ];then
     mkdir $dir
 fi
 
+export JAVA_HOME=$JAVA7_HOME && export JRE_HOME=$JAVA_HOME/jre && export CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH && export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+
+########################################################################
+if [ $STEP == 0 -o $STEP == 'all' ]; then
+#http://www.usadellab.org/cms/?page=trimmomatic
+echo "`date`: Start trimming"
+
+bash ~/lake/fastq-trimmonmatic.sh -1 $fq1 -2 $fq2 -s $smp -o $dir
+# relink fq file
+fq1=$dir/$smp.clean.R1.fastq.gz fq2=$dir/$smp.clean.R2.fastq.gz
+
+fi
+#########################################################################
+
 
 # build bwa fasta index 
 #$bwa index $reffa
@@ -92,8 +106,16 @@ java -jar $picard SortSam \
 java -jar $picard MarkDuplicates \
     INPUT=${dir}/${smp}.sorted_reads.bam \
     OUTPUT=${dir}/${smp}.dedup_reads.bam \
-    METRICS_FILE=${dir}/${smp}.metrics.txt
+    METRICS_FILE=${dir}/${smp}.dedup_reads.bam.metrics.txt
 java -jar $picard BuildBamIndex INPUT=${dir}/${smp}.dedup_reads.bam
+
+java -jar $gatk -T CallableLoci -R $reffa \
+    -I ${dir}/${smp}.dedup_reads.bam -L $bedinterval -o ${dir}/${smp}.callable_status.bed \
+    --minDepth 20 --minMappingQuality 20 --minBaseQuality 20 \
+    --summary ${dir}/${smp}.callableloci.summary
+
+cat ${dir}/${smp}.callable_status.bed >> ${dir}/${smp}.callableloci.summary
+rm ${dir}/${smp}.callable_status.bed
 
 fi
 ###################################################################
@@ -175,8 +197,8 @@ java -jar $gatk \
     -L $interval \
     -D ${bundle_dir}/dbsnp_138.hg19.vcf \
     -glm BOTH 
-#    -A StrandBiasBySample -A  
 
+#    -A StrandBiasBySample -A  
 
 #    --min_mapping_quality_score 20 \
 #    --min_base_quality_score 20 \
@@ -221,8 +243,9 @@ java -jar $gatk \
     -T VariantFiltration \
     -R $reffa \
     -V ${dir}/${smp}.raw_snps.vcf \
-    --filterExpression "DP <= 10 || QD < 2.0 || FS > 60.0 || MQ < 40.0 || (vc.hasAttribute('MQRankSum') && MQRankSum < -12.5) || (vc.hasAttribute('ReadPosRankSum') && ReadPosRankSum < -8.0) " \
-    --filterName "snp_hard_filter" \
+    --filterExpression "DP < 20" --filterName "lowDP" --filterExpression "QD < 2.0" --filterName "lowQD" --filterExpression "FS > 60.0" --filterName "highFS" --filterExpression "MQ < 40.0" --filterName "lowMQ"   \
+    --filterExpression "(vc.hasAttribute('MQRankSum') && MQRankSum < -12.5)" --filterName "lowMQRankSum"  \
+    --filterExpression "(vc.hasAttribute('ReadPosRankSum') && ReadPosRankSum < -8.0) " --filterName "lowReadPosRankSum"  \
     -o ${dir}/${smp}.filtered_snps.vcf
 
 # indel filter.
@@ -230,8 +253,8 @@ java -jar $gatk \
     -T VariantFiltration \
     -R $reffa \
     -V ${dir}/${smp}.raw_indels.vcf \
-    --filterExpression "DP <= 10 || QD < 2.0 || FS > 200.0 || (vc.hasAttribute('ReadPosRankSum') && ReadPosRankSum < -20.0) " \
-    --filterName "indel_hard_filter" \
+    --filterExpression "DP < 20" --filterName "lowDP" --filterExpression "QD < 2.0" --filterName "lowQD" --filterExpression "FS > 200" --filterName "highFS" \
+    --filterExpression "(vc.hasAttribute('ReadPosRankSum') && ReadPosRankSum < -20.0) " --filterName "lowReadPosRankSum" \
     -o ${dir}/${smp}.filtered_indels.vcf
 
 # merge files and remove

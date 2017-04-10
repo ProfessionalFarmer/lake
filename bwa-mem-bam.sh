@@ -4,8 +4,8 @@
 
 reffa='/home/zhuz/ref/hg19/ucsc.hg19.fasta'
 bwa='/share/apps/bwa.kit/bwa'
-#picard='/share/apps/picard-2.6.0/picard.jar'
-picard='/share/apps/picard-tools-1.124/picard.jar'
+picard='/share/apps/picard-2.6.0/picard.jar'
+#picard='/share/apps/picard-tools-1.124/picard.jar'
 smp=''
 fq1=''
 fq2=''
@@ -16,6 +16,8 @@ bedinterval='/home/zhuz/ref/trusight_cardio_manifest_a.bed'
 gatk='/share/apps/GenomeAnalysisTK-3.6/GenomeAnalysisTK.jar'
 #gatk='/share/apps/GenomeAnalysisTKLite-2.3-9-gdcdccbb/GenomeAnalysisTKLite.jar'
 
+# new gatk and picard require jdk8
+export JAVA_HOME=$JAVA8_HOME && export JRE_HOME=$JAVA_HOME/jre && export CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH && export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
 
 while getopts "1:2:s:d:o:" arg ## arg is option
 do
