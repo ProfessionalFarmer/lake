@@ -68,7 +68,7 @@ fi
 export JAVA_HOME=$JAVA7_HOME && export JRE_HOME=$JAVA_HOME/jre && export CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH && export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
 
 ########################################################################
-if [ $STEP == 0 -o $STEP == 'all' ]; then
+if [ $STEP == a0 -o $STEP == 'aall' ]; then
 #http://www.usadellab.org/cms/?page=trimmomatic
 echo "`date`: Start trimming"
 
@@ -102,6 +102,8 @@ java -jar $picard SortSam \
     INPUT=${dir}/${smp}.sam \
     OUTPUT=${dir}/${smp}.sorted_reads.bam \
     SORT_ORDER=coordinate 
+# sam file is large, remove it
+rm ${dir}/${smp}.sam
 # mark dup
 java -jar $picard MarkDuplicates \
     INPUT=${dir}/${smp}.sorted_reads.bam \
@@ -110,7 +112,7 @@ java -jar $picard MarkDuplicates \
 java -jar $picard BuildBamIndex INPUT=${dir}/${smp}.dedup_reads.bam
 
 java -jar $gatk -T CallableLoci -R $reffa \
-    -I ${dir}/${smp}.dedup_reads.bam -L $bedinterval -o ${dir}/${smp}.callable_status.bed \
+    -I ${dir}/${smp}.dedup_reads.bam -L $interval -o ${dir}/${smp}.callable_status.bed \
     --minDepth 20 --minMappingQuality 20 --minBaseQuality 20 \
     --summary ${dir}/${smp}.callableloci.summary
 
@@ -281,5 +283,16 @@ fi
 ##################################################################
 
 
+##################################################################
+if [ $STEP == 5 -o $STEP == 'all' ]; then
+echo "`date`: Start annotation"
 
+bash ~/lake/vep-annotation.sh -i ${dir}/${smp}.pass.vcf -o ${dir}/${smp}.annotation.txt
+
+
+fi
+##################################################################
+
+
+cp `dirname $0`\$0 ${dir}/${smp}.analysis_script.sh 
 
