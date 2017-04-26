@@ -294,5 +294,5 @@ fi
 ##################################################################
 
 
-cp `dirname $0`\$0 ${dir}/${smp}.analysis_script.sh 
+cp `dirname $0`/$0 ${dir}/${smp}.analysis_script.sh 
 
