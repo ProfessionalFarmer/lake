@@ -68,7 +68,7 @@ fi
 export JAVA_HOME=$JAVA7_HOME && export JRE_HOME=$JAVA_HOME/jre && export CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH && export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
 
 ########################################################################
-if [ $STEP == a0 -o $STEP == 'aall' ]; then
+if [ $STEP == 0 -o $STEP == 'all' ]; then
 #http://www.usadellab.org/cms/?page=trimmomatic
 echo "`date`: Start trimming"
 
