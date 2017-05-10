@@ -5,15 +5,11 @@ Create on: 20170508
 
 '''
 
-from scipy import stats
-import numpy as np
 import sys
 import getopt
-import string
-import math
 
 def main():
-    sys.argv=['','-r','C:\\Users\\Administrator\\Desktop\\rs.list','-v','C:\\Users\\Administrator\\Desktop\\VOL018B0.pass.vcf']
+#    sys.argv=['','-r','C:\\Users\\Administrator\\Desktop\\rs.list','-v','C:\\Users\\Administrator\\Desktop\\VOL018B0.pass.vcf']
     try:
         opts, args = getopt.getopt(sys.argv[1:], "r:o:v:", [''])
     except getopt.GetoptError:
@@ -47,20 +43,27 @@ def main():
     for t in rslist:
         output.write('\t'+t)
     output.write('\n'+vcflist.pop(0).strip().split('\t')[9])
+    vcfRsGtMap={}
     for line in vcflist:
         rs=line.strip().split('\t')[2]
         if rs in rsset:
             genotype = line.strip().split('\t')[9].split(':')[0]
-            if '0/1' == genotype:
+            vcfRsGtMap[rs] = genotype
+            continue
+    for rs in rslist:
+        if rs in vcfRsGtMap.keys():
+            genotype=vcfRsGtMap[rs]
+            if '0/1'   == genotype:
                 output.write('\t1')
             elif '1/1' == genotype:
                 output.write('\t2')
             elif '1/2' == genotype:
                 output.write('\t3')
-            else:
-                output.write('\t0')
+        else:
+            output.write('\t0')
     output.write('\n')
     output.flush()
+
 
 if __name__=='__main__':
     main()

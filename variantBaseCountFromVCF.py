@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Jason'
 '''
-Create on: 20170331
+Create on: 20170331, 20170508
 '''
 import getopt
 import sys
@@ -27,6 +27,7 @@ rsRefMap={rs:'' for rs in rslist}
 # {rs:{base:count}}
 rsCountMap={rs:{} for rs in rslist}
 rsGtMap={rs:{'0/1':0,'1/1':0,'1/2':0} for rs in rslist}
+rsRefPos={rs:'' for rs in rslist}
 
 ifs=sys.stdin
 for line in ifs:
@@ -36,10 +37,12 @@ for line in ifs:
     rs=llist[2]
     for rstmp in rslist:
         if rstmp==rs:
+	    pos=llist[0]+'\t'+llist[1]
             ref=llist[3]
             alt=llist[4]
             gt=llist[9].split(':')[0]
             rsRefMap[rs]=ref
+	    rsRefPos[rs]=pos
             rsBaseCountMap=rsCountMap[rs]
 	    if not ref in rsBaseCountMap.keys():
 		rsBaseCountMap[ref] = 0
@@ -72,9 +75,9 @@ for line in ifs:
             rsGtMap[rs]=gtMap
 
 ofs=sys.stdout
-ofs.write('RsID\tRef\n')
+ofs.write('RsID\tChr\tPos\tRef\n')
 for rs in rslist:
-    ofs.write(rs+'\t')
+    ofs.write(rs+'\t'+rsRefPos[rs]+'\t'+rsRefMap[rs]+'\t')
     rsBaseCountMap=rsCountMap[rs]
     total=0
     for base,count in rsBaseCountMap.items():
@@ -83,9 +86,9 @@ for rs in rslist:
         ofs.write('%s\t%d\t%.3f\t'%(base,count,float(count)/total))
     ofs.write('\n')
 
-ofs.write('\n\nRsID\tGenotype\n')
+ofs.write('RsID\tChr\tPos\tRef\n')
 for rs in rslist:
-    ofs.write(rs+'\t')
+    ofs.write(rs+'\t'+rsRefPos[rs]+'\t'+rsRefMap[rs]+'\t')
     gtMap=rsGtMap[rs]
     total=0
     for gt,count in gtMap.items():
@@ -96,5 +99,6 @@ for rs in rslist:
 
 ofs.flush()
 ofs.close()
+
 
 
