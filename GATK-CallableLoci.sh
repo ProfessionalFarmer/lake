@@ -46,9 +46,10 @@ java -jar $gatk \
     --minDepth 20 \
     --minMappingQuality 20 \
     --minBaseQuality    20 \
-    --summary $tmp.tmp.summary
-cat $tmp.tmp.summary 
+    --summary $tmp.tmp.summary \
+    -o $tmp.tmp.bed 
+cat $tmp.tmp.summary  $tmp.tmp.bed
 echo '#########################' 
-rm $tmp.tmp.summary 
+rm $tmp.tmp.summary   $tmp.tmp.bed
 
 
