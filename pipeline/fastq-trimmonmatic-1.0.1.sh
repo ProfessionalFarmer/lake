@@ -1,4 +1,5 @@
 #! /bin/bash
+# 1.0.0->1.0.1
 # 20170320: 1, set keepBothReads TRUE. 2, slide window check parameter: change 4:15 to 4:20
 
 trimmonmatic='/share/apps/Trimmomatic-0.36/trimmomatic-0.36.jar'
