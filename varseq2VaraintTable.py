@@ -82,7 +82,7 @@ def getVarseqMap(filePath,gene,ntChange):
     count=0
     map={}
     for line in cList:
-        if gene in line and ntChange in line:
+        if gene.strip() in line and ntChange.strip() in line:
             targetLine=line.split('\t')
             count+=1
     if not count ==1 :
@@ -116,12 +116,20 @@ def working(oldsheet,newsheet,varseqMap):
     :param varseqMap: 读取的varseq数据
     :return: 
     '''
+    row,col=getItemPosition(oldsheet,'Mutation Type')
+    value=getVarseqValue(varseqMap,'Sequence Ontology (Combined)')
+    addValueToSheet(newsheet,row+1,col,value)
+
     row,col=getItemPosition(oldsheet,'nt Change')
     value=getVarseqValue(varseqMap,'HGVS c. (Clinically Relevant)').split(':')[1]
     addValueToSheet(newsheet,row+1,col,value)
 
     row,col=getItemPosition(oldsheet,'Amino Acid Change')
-    value=getVarseqValue(varseqMap,'HGVS p. (Clinically Relevant)').split(':')[1]
+    if getVarseqValue(varseqMap,'HGVS p. (Clinically Relevant)').strip()=='':
+	print '没有知道HGVS命名，请确认，但程序不会终止'
+	value=''
+    else:
+	value=getVarseqValue(varseqMap,'HGVS p. (Clinically Relevant)').split(':')[1]
     addValueToSheet(newsheet, row + 1, col, value)
 
 #    row, col = getItemPosition(oldsheet, 'Location')
