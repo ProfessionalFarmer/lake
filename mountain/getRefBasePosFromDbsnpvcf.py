@@ -40,22 +40,18 @@ else:
     ofs=sys.stdout
 
 rsRefBaseMap={}
-
+rs_set=set(rslist)
 for line in ifs:
     if line.startswith('#'): continue
     l=line.split('\t')
+    if not l[2] in rs_set: continue
     rsRefBaseMap[l[2]]='\t'.join(l[:4])
-    #for rs in rslist:
-    #    if '\t'+rs+'\t' in line:
-    #        rsRefBaseMap[rs]='\t'.join(line.split['\t'][:4])
-    #        break
 for rs in rslist:
     ofs.write(rs+'\t'+rsRefBaseMap[rs]+'\n')
 
 
 ofs.flush()
 ofs.close()
-
 
 
 
