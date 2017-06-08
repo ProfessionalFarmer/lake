@@ -2,7 +2,7 @@
 __author__ = 'Jason'
 '''
 Create on: 20170531
-
+Modify on: 20170607 添加疾病名和遗传方式
 '''
 
 
@@ -64,7 +64,7 @@ def getItemPosition(sheet,item):
                 n = sheet.row_values(i).index(tmp)
                 count += 1
     if not count==1:
-        sys.stderr.write(item + ' occurs more than one place in variant table')
+        sys.stderr.write(item + ' 在突变信息表中出现了'+str(count)+'次')
         sys.exit(1)
     return  m,n
 
@@ -116,6 +116,14 @@ def working(oldsheet,newsheet,varseqMap):
     :param varseqMap: 读取的varseq数据
     :return: 
     '''
+    row,col=getItemPosition(oldsheet,'Disease Name')
+    value=getVarseqValue(varseqMap,'Disorders')
+    addValueToSheet(newsheet,row+1,col,value)
+
+    row,col=getItemPosition(oldsheet,'Mode of Inheritance')
+    value=getVarseqValue(varseqMap,'Disorders Inheritance')
+    addValueToSheet(newsheet,row+1,col,value)
+
     row,col=getItemPosition(oldsheet,'Mutation Type')
     value=getVarseqValue(varseqMap,'Sequence Ontology (Combined)')
     addValueToSheet(newsheet,row+1,col,value)
@@ -126,7 +134,7 @@ def working(oldsheet,newsheet,varseqMap):
 
     row,col=getItemPosition(oldsheet,'Amino Acid Change')
     if getVarseqValue(varseqMap,'HGVS p. (Clinically Relevant)').strip()=='':
-	print '没有知道HGVS命名，请确认，但程序不会终止'
+	print '没有找到HGVS命名，请确认，但程序不会终止'
 	value=''
     else:
 	value=getVarseqValue(varseqMap,'HGVS p. (Clinically Relevant)').split(':')[1]
@@ -161,7 +169,7 @@ def working(oldsheet,newsheet,varseqMap):
     addValueToSheet(newsheet, row + 1, col, value)
 
     row, col = getItemPosition(oldsheet, 'SNPID')
-    value = getVarseqValue(varseqMap, 'RSID')
+    value = getVarseqValue(varseqMap, 'dbSNP142 RS ID')
     addValueToSheet(newsheet, row + 1, col, value)
 
     row, col = getItemPosition(oldsheet, 'SIFT')
@@ -210,7 +218,7 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], "x:t:", [''])
     except getopt.GetoptError:
         print '''
-        program.py -t <varseq.tsv> -x <variantTable.xlsx> 
+        program.py -t <varseq.tsv> -x <variantTable.xls> 
         '''
         sys.exit(1)
 
