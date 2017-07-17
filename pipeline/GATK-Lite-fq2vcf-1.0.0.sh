@@ -294,8 +294,7 @@ fi
 ##################################################################
 
 ##################################################################
-if [ $STEP == 6 -o $STEP == 'alil' ]; then
-
+if [ $STEP == 6 -o $STEP == 'all' ]; then
 
 bash ~/lake/generateQCDataForLims.sh ${dir}/ ${smp} > ${dir}/${smp}.4lims.csv
 

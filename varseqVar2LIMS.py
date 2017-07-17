@@ -2,7 +2,7 @@
 __author__ = 'Jason'
 '''
 Create on: 20170331
-
+ls BA170412000* | cut -f 1 -d '.' | awk '{print " -i "$1".tsv -o "$1".csv -s "$1}' | sudo xargs -L 1 /share/apps/bin/python ~/lake/varseqVar2LIMS.py 
 '''
 import getopt
 import sys
@@ -44,7 +44,7 @@ zygosityChineseMap={
 def main():
     #sys.argv=['','-i','C:\\Users\\Administrator\\Desktop\\MDKV001-003allvariants.tsv']
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "i:o:s:", [''])
+        opts, args = getopt.getopt(sys.argv[1:], "i:o:s:h", [''])
     except getopt.GetoptError:
         print '''
         program.py -i <INPUT> -o <OUTPUT> -s <SAMPLE_NAME> -h
@@ -72,13 +72,6 @@ def main():
     else:
         ifs=sys.stdin
     #output='C:\\Users\\Administrator\\Desktop\\csvtest.csv'
-    if output:
-        csvfile = file(output,'wb')
-        ofs=csv.writer(csvfile)
-    else:
-        ofs=sys.stdout
-    if is_print_header:
-        ofs.writerow(['sampleName','chrPos','geneName','readDp','variantFrequency','zygosity','geneRegion','effect','transcript','codinBaseMutation','aaMutation','rsId','inheritance'])
     header=ifs.readline().rstrip().split('\t')
 
     if not 'Chr:Pos' in header:
@@ -97,6 +90,15 @@ def main():
         if 'Zygosity' in item:
             idxZygosity=header.index(item)
             continue
+
+    if output:
+        csvfile = file(output,'wb')
+    else:
+        csvfile = file(sampleName+'.csv','wb')
+    ofs=csv.writer(csvfile)
+    if is_print_header:
+        ofs.writerow(['sampleName','chrPos','geneName','readDp','variantFrequency','zygosity','geneRegion','effect','transcript','codinBaseMutation','aaMutation','rsId','inheritance'])
+
     if idxDP==-1 or idxVF==-1 or idxZygosity==-1:
         sys.stderr.write('index error for Read Depths, idxVF ro Zygosity\n')
         sys.exit(1)
