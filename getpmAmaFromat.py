@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 getpmAbstracts.py
-Retrieving PubMed abstracts https://github.com/shreyu86/PubMedLDA
-Author: Shreyas Karnik
+Retrieving PubMed artical information by Pubmed ID (pmid) and generate AMA style citation
+Origin from: Shreyas Karnik https://github.com/shreyu86/PubMedLDA 
+Modified by: Jason Zhu 20170818
 """
 import requests
 import sys
@@ -16,7 +17,6 @@ logging.basicConfig(format='%(asctime)s %(levelname)-7s %(message)s [%(pathname)
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
-
 usage = "usage:python %prog -q [query] -o [output] -s [flag for steming]"
 parser = optparse.OptionParser(usage=usage)
 parser.add_option("-q", "--query", action="store", dest="query", help="Enter the PubMed query (PubMed style queries supported)", metavar="QUERY")
@@ -45,6 +45,7 @@ def de_safe_xml(kinda_xml):
 
 
 def main():
+
     query = options.query
     ofile = options.outfile
     esearch = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&retmode=xml&retmax=10000000&term={}'.format(query)
@@ -61,22 +62,37 @@ def main():
         for article in root.findall("PubmedArticle"):
             abstract_text = ''
             pmid = article.find("MedlineCitation/PMID").text
+
+            author = ''
+            for ele in  article.findall("MedlineCitation/Article/AuthorList/Author"):
+                author=author+' '+ele.findtext('LastName')+' '+ele.findtext('Initials')+','
+            author=author.strip()[:-1]
+            year=article.findtext("MedlineCitation/Article/ArticleDate/Year")
+            press=article.findtext("MedlineCitation/MedlineJournalInfo/MedlineTA")
+            volume=article.findtext("MedlineCitation/Article/Journal/JournalIssue/Volume")
+            issuse=article.findtext("MedlineCitation/Article/Journal/JournalIssue/Issue")
+            if not issuse==None:
+                volume=volume+'(%s)'%(issuse)
+            page=article.findtext("MedlineCitation/Article/Pagination/MedlinePgn")
+
             title = article.findtext("MedlineCitation/Article/ArticleTitle")
             abstract = article.findall("MedlineCitation/Article/Abstract/AbstractText")
+
             if len(abstract) > 0:
                 count += 1
                 for abst_part in abstract:
                     abstract_text += ' ' + str(abst_part.text)
                 title.encode('utf-8', 'replace')
                 abstract_text.encode('utf-8', 'replace')
-                final = str(title) + " " + str(abstract_text)
+                final = str(abstract_text)
                 final.encode('utf-8', 'replace')
                 if options.stem:
                     final = final.translate(None, string.punctuation)
                     f.write(gensim.parsing.stem_text(final.lower()) + "\n")
                 else:
                     final = final.translate(None, string.punctuation)
-                f.write(final + "\n")
+                # f.write(final + "\n") # final为abstract
+                f.write('%s\t%s. %s %s. %s;%s:%s.\n'%(pmid,author,title,press,year,volume,page))
             else:
                 logging.info('skipping PMID {} as length of abstract is zero'.format(pmid))
     logging.info('written to {} articles to file {}'.format(count, ofile))
@@ -84,3 +100,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
