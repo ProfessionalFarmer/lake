@@ -2,7 +2,7 @@
 # Jason: 20161202, 20170320 
 # 1.0.0->1.0.1 2017-05-26
 # We have found true positive variant were filtered by hard filter (MQ and depth). So hard filter parameters are relaxed (MQ 40 -> 10, DP 20 -> 10 ). In illumina NA12878 four replicate samples, this change only affects avoid miss true positive variant (rs10039029, rs6960 ).
-
+# 2017-09-04 Add comment: CallableLoci will automaticlly apply DuplicateReadFilter
 
 reffa='/home/zhuz/ref/hg19/ucsc.hg19.fasta'
 bwa='/share/apps/bwa.kit/bwa'
@@ -114,6 +114,9 @@ java -jar $picard MarkDuplicates \
     METRICS_FILE=${dir}/${smp}.dedup_reads.bam.metrics.txt
 java -jar $picard BuildBamIndex INPUT=${dir}/${smp}.dedup_reads.bam
 
+
+# These Read Filters are automatically applied to the data by the Engine before processing by CallableLoci.
+# MalformedReadFilter, BadCigarFilter, UnmappedReadFilter, NotPrimaryAlignmentFilter, FailsVendorQualityCheckFilter, DuplicateReadFilter
 java -jar $gatk -T CallableLoci -R $reffa \
     -I ${dir}/${smp}.dedup_reads.bam -L $interval -o ${dir}/${smp}.callable_status.bed \
     --minDepth 20 --minMappingQuality 20 --minBaseQuality 20 \
