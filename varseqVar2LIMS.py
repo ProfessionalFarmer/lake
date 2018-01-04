@@ -98,7 +98,7 @@ def main():
     ofs=csv.writer(csvfile)
     if is_print_header:
         ofs.writerow(['sampleName','chrPos','geneName','readDp','variantFrequency','zygosity','geneRegion','effect','transcript','codinBaseMutation','aaMutation','rsId','inheritance'])
-
+        print('\t'.join(['sampleName','chrPos','geneName','readDp','variantFrequency','zygosity','geneRegion','effect','transcript','codinBaseMutation','aaMutation','rsId','inheritance']))
     if idxDP==-1 or idxVF==-1 or idxZygosity==-1:
         sys.stderr.write('index error for Read Depths, idxVF ro Zygosity\n')
         sys.exit(1)
