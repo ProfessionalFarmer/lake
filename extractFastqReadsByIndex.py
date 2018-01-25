@@ -65,7 +65,7 @@ def main():
         quality = ifs.readline()
 
         if check_index(i7,i5,name):
-            #sys.stdout.write(name+seq+symbol+quality)
+            sys.stdout.write(name+seq+symbol+quality)
             i=i+1
         else: continue
 
