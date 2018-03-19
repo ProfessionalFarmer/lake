@@ -33,7 +33,7 @@ if [ -z "$bam" ];then
     exit 1
 fi
 
-tmp=$bam
+tmp="$HOME/tmp/`uuid`"
 
 if [ ! -z "$interval" ];then
     bam="${bam} -L $interval "

@@ -1,9 +1,11 @@
 #! /usr/bin/Rscript
 # Author: Jason Zhu. Created on: 20160820
-# 
+# Modified on: 20180130
+# # Clone from https://gist.github.com/stephenturner/9396409   Thanks 
 # $1: bedtools coverage output file should be in the same directory
 # file should suffix with "hist.all.txt$"
-# input file from: bedtools coverage -hist -abam  samp.01.bam -b target_regions.bed | grep ^all > samp.01.bam.hist.all.txt  or bedtools genomecov -ibam ../merge.bam -g genome.file.txt | grep ^genome > genome.cov
+# input file from: bedtools coverage -hist -b  samp.01.bam -a target_regions.bed | grep ^all > samp.01.bam.hist.all.txt  or bedtools genomecov -ibam ../merge.bam -g genome.file.txt | grep ^genome > genome.cov
+# bedtools -g and -sorted should be noticed
 # $2: png figure output path
 # Ref: http://www.gettinggeneticsdone.com/2014/03/visualize-coverage-exome-targeted-ngs-bedtools.html
 
@@ -33,7 +35,9 @@ cov <- list()
 cov_cumul <- list()
 for (i in 1:length(files)) {
     cov[[i]] <- read.table(files[i])
-    cov_cumul[[i]] <- 1-cumsum(cov[[i]][,5])
+# 2018-02-26 Jason
+     cov_cumul[[i]] <- rev( cumsum(cov[[i]][,5]) )
+#    cov_cumul[[i]] <- 1-cumsum(cov[[i]][,5])
 }
 
 # Pick some colors
@@ -44,6 +48,7 @@ for (i in 1:length(files)) {
 # display.brewer.all()
 library(RColorBrewer)
 cols <- brewer.pal(length(cov), "Dark2")
+#cols <- colorRampPalette(brewer.pal(8, "Accent"))(length(cov))
 
 # Save the graph to a file
 #png("exome-coverage-plots.png", h=1000, w=1000, pointsize=20)
@@ -62,7 +67,9 @@ axis(2, at=c(0.90), labels=c(0.90))
 axis(2, at=c(0.50), labels=c(0.50))
 
 # Actually plot the data for each of the alignments (stored in the lists).
-for (i in 1:length(cov)) points(cov[[i]][2:401, 2], cov_cumul[[i]][1:400], type='l', lwd=3, col=cols[i])
+# 2018-02-26 Jason
+# for (i in 1:length(cov)) points(cov[[i]][2:401, 2], cov_cumul[[i]][1:400], type='l', lwd=3, col=cols[i])
+for (i in 1:length(cov)) points(c(0,cov[[i]][1:400, 2]), c(1,cov_cumul[[i]][1:400]), type='l', lwd=3, col=cols[i])
 
 # Add a legend using the nice sample labeles rather than the full filenames.
 legend("topright", legend=labs, col=cols, lty=1, lwd=4)
