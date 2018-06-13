@@ -1,8 +1,7 @@
 #! /bin/bash
 # Created at 2017-12-11
-dir=$1
-bam=$2
-geneBedDir=$3
+bam=$1
+geneBedDir=$2
 ref='/share/apps/reference/hg19/ucsc.hg19.fasta'
 gatk='/share/apps/GenomeAnalysisTKLite-2.3-9-gdcdccbb/GenomeAnalysisTKLite.jar'
 # jdk7
