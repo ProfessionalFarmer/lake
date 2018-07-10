@@ -63,12 +63,16 @@ def moveUMI2Tag(read1,read2,r1_template,r2_template):
 	elif t == 'T':
 	    read1_seq_new.append(read1_seq[i])
             read1_qual_new.append(read1_qual[i])
-    for i,t in enumerate(r2_template):
-        if t == 'M':
-            umi = umi + read2_seq[i]
-        elif t == 'T':
-            read2_seq_new.append(read2_seq[i])
-            read2_qual_new.append(read2_qual[i])
+    if r2_template is None:
+        read2_seq_new = read2_seq
+        read2_qual_new = read2_qual
+    else:
+        for i,t in enumerate(r2_template):
+            if t == 'M':
+                umi = umi + read2_seq[i]
+            elif t == 'T':
+                read2_seq_new.append(read2_seq[i])
+                read2_qual_new.append(read2_qual[i])
     read1.seq = ''.join(read1_seq_new)
     read1.qual = ''.join(read1_qual_new)
     read2.seq = ''.join(read2_seq_new)
@@ -97,7 +101,10 @@ def main():
 	logging.error("Please set read strcuture for either Read1 or Read2")
 	exit(1)
     r1_template = parseReadStructure(options.structure1)
-    r2_template = parseReadStructure(options.structure2)
+    if options.structure2 is None:
+        r2_template = parseReadStructure(options.structure2)
+    else:
+        r2_template = None
     infile = pysam.AlignmentFile(options.input, "rb", check_sq=False)
     logging.info("start working: header is \n" + str(infile.header) )
     outfile = pysam.AlignmentFile(options.output, "wb", header=infile.header)
