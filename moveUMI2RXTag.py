@@ -101,7 +101,7 @@ def main():
 	logging.error("Please set read strcuture for either Read1 or Read2")
 	exit(1)
     r1_template = parseReadStructure(options.structure1)
-    if options.structure2 is None:
+    if not options.structure2 is None:
         r2_template = parseReadStructure(options.structure2)
     else:
         r2_template = None
