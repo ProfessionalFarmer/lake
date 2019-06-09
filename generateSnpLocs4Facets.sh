@@ -1,7 +1,7 @@
 #! /bin/bash
 #$1 ~/ref/hg38/dbsnp_146.hg38.vcf 
 #$2 ~/ref/agilent/hg38v7/S31285117_Regions.bed| head
-
+# $1 dbsnp file, $2 target region file, $3 output directory
 out=$3
 rm $3/snploc*
 echo "Start at `date`"
