@@ -42,7 +42,7 @@ for line in f:
         else:
             gene = line_list[col_Gene].split('|')[0]
             gene_id = line_list[col_Gene].split('|')[1]
-            transcript = line_list[col_FeatureAliases]
+            #transcript = line_list[col_FeatureAliases]
         if gene=='':
             continue
         chr = line_list[col_CompositeCoordinates].split(':')[0]
@@ -56,7 +56,7 @@ for line in f:
                           start=coordinates.split('-')[0],
                           end=coordinates.split('-')[1],
                           strand=strand,
-                          gene_id = gene_id,
+                          gene_id = gene, # ncbi id ---> gene id, gene symbol --> gene
                           transcript = transcript,
                           exon_number = i,
                           exon_id = transcript+'.'+str(i),
