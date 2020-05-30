@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #######################################################################################
 ###                                                                                 ###
-###     Stat class code from cuffcompare result: from tracking file
+###     Stat class code from cuffcompare result: from tracking file (just stat j and =)
 ###     Copyright (C) 2020  Zhongxu ZHU, CityU, 20200530                            ###
 #######################################################################################
 #
