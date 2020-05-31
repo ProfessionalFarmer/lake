@@ -103,7 +103,7 @@ if args.tracking:
                 trackingid_oldids[ trackingid ] = trackingid_oldids[ trackingid ] + "," + oldid
 
 
-mapping = open(args.output+".gene-isoform-event-mapping",'w')
+mapping = open(args.output,'w')
 mapping.write("Gene\tEventID\tEvent\tIsoform\tSourceIso\tSample\tClass\n")
 
 for ase in asList:
@@ -141,3 +141,5 @@ for ase in asList:
 
 mapping.close()
 
+
+sys.stderr.write("Done\n")
