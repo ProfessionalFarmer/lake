@@ -4,6 +4,7 @@
 input=''
 output=''
 gversion='hg38'
+threads=10
 
 while getopts "i:o:g:" arg ## arg is option
 do
@@ -54,7 +55,7 @@ mkdir -p $rnd
 $annovar $input $db -buildver $gversion -remove \
        	-protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a,cosmic89_coding,cosmic89_noncoding,clinvar_20190305 \
 	-operation g,r,f,f,f,f,f,f \
-	-nastring . -vcfinput -polish --thread 20 \
+	-nastring . -vcfinput -polish --thread $threads \
 	-out ${rnd}/${rnd} 1>&2
 
 if [[ "$output" = "" ]];then
