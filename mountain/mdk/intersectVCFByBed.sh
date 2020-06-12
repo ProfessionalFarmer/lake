@@ -3,8 +3,7 @@
 # bash sh -v vcf -b bed  > file
 bed=''
 vcf=''
-bdt='/share/apps/bin/bedtools'
-gf='/share/apps/reference/hg19/bedtools.genome.file'
+gf='/data/home2/Zhongxu/ref/hg38/hg38.chrsize'
 
 
 while getopts "v:b:" arg ## arg is option
@@ -32,7 +31,7 @@ fi
 tmp="`echo $vcf | awk -F '/' '{print $NF}' `" | cut -f 1 -d '.' 
 
 cat $vcf | grep '#' > .$tmp.bedtools.intersect
-$bdt intersect -a $vcf -b $bed -wa -sorted -g $gf >> .$tmp.bedtools.intersect
+bedtools intersect -a $vcf -b $bed -wa -sorted -g $gf >> .$tmp.bedtools.intersect
 cat .$tmp.bedtools.intersect && rm .$tmp.bedtools.intersect
 
 
