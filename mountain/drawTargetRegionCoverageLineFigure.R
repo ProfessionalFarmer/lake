@@ -35,9 +35,7 @@ cov <- list()
 cov_cumul <- list()
 for (i in 1:length(files)) {
     cov[[i]] <- read.table(files[i])
-# 2018-02-26 Jason
-     cov_cumul[[i]] <- rev( cumsum(cov[[i]][,5]) )
-#    cov_cumul[[i]] <- 1-cumsum(cov[[i]][,5])
+    cov_cumul[[i]] <- 1-cumsum(cov[[i]][,5])
 }
 
 # Pick some colors
@@ -47,7 +45,12 @@ for (i in 1:length(files)) {
 # ?colorRampPalette
 # display.brewer.all()
 library(RColorBrewer)
+library(ggsci)
+if(length(cov)<7){
 cols <- brewer.pal(length(cov), "Dark2")
+}else{
+cols <- pal_d3("category20",alpha = 0.8)(20)
+}
 #cols <- colorRampPalette(brewer.pal(8, "Accent"))(length(cov))
 
 # Save the graph to a file
