@@ -15,10 +15,10 @@
 # >>> gtf.getRecordsByID("TTN", "transcript_id", "NM_001367552")
 # >>> gtf.getRecordsByID(""NM_013416"", "feature", "start_codon")
 # >>> gtf.getRecordsByID("NR_024540", "exon_id", "NR_024540.5")
-import sys
 
 class gtfParser:
     def __init__(self, input_file):
+        import sys
         self.data = {}
         self.dict = {}
         self.gene_attributes_dict = {} # ZZX
