@@ -55,4 +55,7 @@ else
 fi
 
 
+#wget -c http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/liftOver
+#chmod 755 liftOver
+#liftOver input.bed hg38ToHg19.over.chain output.bed output.unMapped
 
