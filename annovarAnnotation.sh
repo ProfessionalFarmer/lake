@@ -43,8 +43,8 @@ fi
 
 
 
-annovar='/data/home/Hao/software/annovar/table_annovar.pl'
-db='/data/home/Hao/software/annovar/humandb/'
+annovar='/data/cache/zhongxu/software/annovar/table_annovar.pl'
+db='/data/cache/zhongxu/software/annovar/humandb'
 
 rnd="`date +%s%N | md5sum | head -c 10`"
 echo "`date`: Temp directory for $input: $rnd"  1>&2
