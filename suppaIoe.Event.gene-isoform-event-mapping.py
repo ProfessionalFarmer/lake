@@ -70,7 +70,11 @@ if args.gtf:
         id_gene[  id ] = infoMap["gene_name"]
         id_class[ id ] = infoMap["class_code"]
 
+        
+
 del id
+
+
 # if provide tracking file
 if args.tracking:
 
@@ -88,7 +92,7 @@ if args.tracking:
         class_code = llist[3]
 
         # just select j and =
-        if not class_code == 'j' and  not class_code == '=':
+        if not class_code in ['j', '=']:
             continue
 
         for i in range(4,len(llist)):
@@ -135,9 +139,11 @@ for ase in asList:
                 smptmp = idtmp.split(".")[0]
                 
                 if id_class[id] == 'j':
-                    mapping.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(gene, eventid, ase, id, idtmp, smptmp, "Novel"))
+                    mapping.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(gene, eventid, ase, id, idtmp, smptmp, "Novel: not tumor-specific"))
                 elif id_class[id] == '=':
                     mapping.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(gene, eventid, ase, id, idtmp, smptmp, "Known"))
+                elif id_class[id] == "jt":
+                    mapping.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(gene, eventid, ase, id, idtmp, smptmp, "Novel: tumor-specific"))
 
 mapping.close()
 
