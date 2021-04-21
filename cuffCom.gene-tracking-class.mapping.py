@@ -23,7 +23,7 @@ parser.add_argument('-i',metavar='File path',action = 'store',type = str ,dest =
                      default='',help="Gffcompare tracking format", required=True)
 parser.add_argument('-o',metavar='Output File',action = 'store',type = str ,dest = 'output',
                      default='',help="Output file path", required=False)
-                     
+
 args = parser.parse_args()
 
 
@@ -66,7 +66,7 @@ for line in open(args.input):
     for sampleinfo in llist[4:len(llist)]:
         if sampleinfo != '-': count = count + 1
 
-    if count <=1 : continue  ## filter
+    #if count <=1 : continue  ## filter，决定是否过滤1次，还是至少出现2次
 
     for sampleinfo in llist[4:len(llist)]:
         if sampleinfo == '-': continue
