@@ -22,16 +22,20 @@ import argparse
 import re
 
 parser = argparse.ArgumentParser(description='Process description',prog='PROG', usage='%(prog)s [options]')
-parser.add_argument('-p',metavar='Suppa prefix',action = 'store',type = str ,dest = 'prefix',
+parser.add_argument('-p', metavar='Suppa prefix',action = 'store',type = str ,dest = 'prefix',
                      default='',help="Suppa prefix", required=True)
-parser.add_argument('-o',metavar='Output File path',action = 'store',type = str ,dest = 'output',
+parser.add_argument('-o', metavar='Output File path',action = 'store',type = str ,dest = 'output',
                      default='',help="Output file path", required=True)
 # if provide tracking file, then we know whether the isoform from normal or tumor or both.
-parser.add_argument('-t',metavar='Cuffcompare tracking file',action = 'store',type = str ,dest = 'tracking',
+parser.add_argument('-t', metavar='Cuffcompare tracking file',action = 'store',type = str ,dest = 'tracking',
                      default='',help="Cunffcompare tracking file", required=True)
 # we need track the orgin id based on gtf and tracking files. very complex
-parser.add_argument('-g',metavar='gtf file',action = 'store',type = str ,dest = 'gtf',
+parser.add_argument('-g', metavar='gtf file', action = 'store',type = str ,dest = 'gtf',
                      default='',help="gtf file", required=True)
+# stat exitron
+parser.add_argument('-e', action = 'store_true', dest = 'exitron',
+                     default=False, help="output exitron")
+
 
 
 # sys.argv = ["","-p", "analysis/05suppa/merged-ASevents.ioe", "-o", "analysis/05suppa/tmp.all.ioe.count","-n", "^CRC.*-CRC", "-g", "analysis/04gtfprocessing/all.3.filter.gtf", "-t", "analysis/04gtfprocessing/all.1.cuffcompare.tracking"]
@@ -114,17 +118,22 @@ for ase in asList:
     asContent = [l.strip() for l in open(args.prefix+"_"+ase+"_strict.ioe") if l.startswith("chr")]
     novel, known, all = 0, 0, 0
     for line in asContent:
+
         llist = line.split("\t")
         gene = llist[1]
         eventid = llist[2]
+        
+        if ase=="SE": # 20210428 SE的应该选第五列与第四列的差集
+            target_list = [ ttt for ttt in llist[4].split(",") if ttt not in llist[3].split(",") ]
+        else:
+            target_list = llist[3].split(",")
 
-
-        for iso in llist[3].split(","):
+        for iso in target_list: # 对应第四列
   
             id  = iso.split("-")[1]
             
             # if we get the id, then id -> oldid -> tracking id -> all oldids related to this tracking id
-            # then we known the class code and sample
+            # then we known the class code and sampe
             
             # get old id
             oldid = id_oldid[id]
@@ -137,13 +146,47 @@ for ase in asList:
             
             for idtmp in idlist:
                 smptmp = idtmp.split(".")[0]
-                
+
                 if id_class[id] == 'j':
                     mapping.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(gene, eventid, ase, id, idtmp, smptmp, "Novel: not tumor-specific"))
                 elif id_class[id] == '=':
                     mapping.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(gene, eventid, ase, id, idtmp, smptmp, "Known"))
                 elif id_class[id] == "jt":
                     mapping.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(gene, eventid, ase, id, idtmp, smptmp, "Novel: tumor-specific"))
+           
+
+
+
+
+
+        # added 20210427 exitron
+        if not args.exitron or not ase=="RI": continue 
+        for iso in llist[4].split(","):  # 这里是4，上面是第三列，exitron是RI的反过程
+
+            id  = iso.split("-")[1]
+
+            # if we get the id, then id -> oldid -> tracking id -> all oldids related to this tracking id
+            # then we known the class code and sample
+
+            # get old id
+            oldid = id_oldid[id]
+
+            # get tracking id
+            trackingid = oldid_trackingid[oldid]
+
+            # get all old ids related to this tracking id
+            idlist = trackingid_oldids[trackingid].split(",")
+
+            for idtmp in idlist:
+                smptmp = idtmp.split(".")[0]
+
+                if id_class[id] == 'j':
+                    mapping.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(gene, eventid, "Exitron", id, idtmp, smptmp, "Novel: not tumor-specific"))
+                elif id_class[id] == '=':
+                    mapping.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(gene, eventid, "Exitron", id, idtmp, smptmp, "Known"))
+                elif id_class[id] == "jt":
+                    mapping.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(gene, eventid, "Exitron", id, idtmp, smptmp, "Novel: tumor-specific"))
+
 
 mapping.close()
 
