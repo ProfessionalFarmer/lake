@@ -7,6 +7,8 @@ FQ2=""
 THREADS=20
 
 REF="/data/home2/Zhongxu/ref/hg38/Homo_sapiens_assembly38.fasta"
+#REF="/data0/Zhongxu/ref/hg38/gencode/GRCh38.primary_assembly.genome.fa"
+
 
 STAR="/data/home2/Zhongxu/software/STAR-2.7.0f/bin/Linux_x86_64/"
 
@@ -16,6 +18,7 @@ runSTAR="false"
 
 # Default. Can be overwrited by -g
 GTF="/data/home2/Zhongxu/ref/refSeq.hg38.gtf"
+#GTF="/data0/Zhongxu/ref/hg38/gencode/gencode.v37.annotation.gtf"
 
 RSEM="/data/home2/Zhongxu/software/RSEM/"
 
@@ -80,18 +83,18 @@ fi
 
 if ${buildIND}; then
 
-mkdir -p ${OUTDIR}/index/star
+mkdir -p ${OUTDIR}/star
 ${STAR}/STAR --runThreadN ${THREADS} --runMode genomeGenerate \
-     --genomeDir ${OUTDIR}/index/star \
+     --genomeDir ${OUTDIR}/star \
      --genomeFastaFiles ${REF} \
      --sjdbGTFfile ${GTF} \
      --sjdbOverhang 149   
      
-mkdir -p ${OUTDIR}/index/rsem
+mkdir -p ${OUTDIR}/rsem
 ${RSEM}/rsem-prepare-reference --gtf ${GTF} \
-     --star --star-path ${STAR}/STAR  \
+     --star --star-path ${STAR}  \
      --star-sjdboverhang 149 -p ${THREADS}  ${REF}  \
-     ${OUTDIR}/index/rsem
+     ${OUTDIR}/rsem/rsem
 
 exit 0    
 fi
@@ -111,14 +114,19 @@ if [ -d "${OUTDIR}/star" ];then
 fi
 
 if ${runSTAR};then
+
+# To output only one of the multi-mapping alignments, picked randomly out of the alignments with the highest score:
+# --outMultimapperOrder Random --outSAMmultNmax 1
+# On the other hand, simply reports only uniquely mapping reads, i.e. discards all the reads that are multi-mappers.  
+# --outFilterMultimapNmax 1 
+
 ${STAR}/STAR --runThreadN ${THREADS} \
      --genomeDir ${STARIND} \
      --sjdbGTFfile ${GTF} \
      --readFilesIn ${FQ1} ${FQ2} \
      --outSAMtype BAM SortedByCoordinate --outSAMattributes All \
      --outFileNamePrefix ${OUTDIR}/${SAMPLE}.star --outTmpDir ${OUTDIR}/star  \
-     --twopassMode Basic --outMultimapperOrder Random \
-     --outSAMmultNmax 1 --outFilterMultimapNmax 1  \
+     --twopassMode Basic --outFilterMultimapNmax 1  \
      --genomeLoad NoSharedMemory --readFilesCommand zcat \
      --quantMode TranscriptomeSAM GeneCounts --outSAMunmapped Within KeepPairs
 
