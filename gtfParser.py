@@ -19,6 +19,9 @@
 class gtfParser:
     def __init__(self, input_file):
         import sys
+        
+        self.gencode_file = False # ZZX 20210510
+        
         self.data = {}
         self.dict = {}
         self.gene_attributes_dict = {} # ZZX
@@ -45,9 +48,15 @@ class gtfParser:
                 frame = record[7]
             else:
                 frame = None
-            attributes = record[8].split(';') # please note the separator between each attribute
+                
+            attributes = record[8].split(';')
             attributes = [x.strip() for x in attributes[0:-1]] # ZZX
-            attributes = {x.split(' ')[0]: x.split(' ')[1].strip("\"") for x in attributes if " " in x} # ZZX
+            
+            if(" " in record[8] and "\"" in record[8]): # compatible with refSeq annotation 20210505
+                attributes = {x.split(' ')[0]: x.split(' ')[1].strip("\"") for x in attributes if " " in x} # ZZX
+            elif (self.gencode_file or "=" in record[8]) : # compatible with gencode annotation 20210505
+                self.gencode_file = True # ZZX 20210510. mark the gff file is gencode vesion
+                attributes = {x.split('=')[0]: x.split('=')[1] for x in attributes} # ZZX
 
             if not (sequence_name in self.data): self.data[sequence_name] = []
             alpha = {'source': source, 'feature': feature, 'start': start, 'end': end, 'score': score, 'strand': strand,
@@ -59,7 +68,14 @@ class gtfParser:
         # ZZX
         for k, v in self.data.items():
             for alpha in v:
-                gene_id = alpha["gene_id"]
+                
+                if alpha['feature'] == 'gene': continue # compatible with refSeq annotation 20210505
+                
+                if(self.gencode_file): # ZZX 20210510
+                    gene_id = alpha["gene_name"] # gencode version
+                else: # ZZX 20210510
+                    gene_id = alpha["gene_id"] # refSeq version
+                
                 transcript_id = alpha["transcript_id"]
 
                 self.transcriptID_geneID_dict[transcript_id] = gene_id
