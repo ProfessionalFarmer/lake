@@ -83,6 +83,8 @@ fi
 
 if ${buildIND}; then
 
+echo "Star index"
+
 mkdir -p ${OUTDIR}/star
 ${STAR}/STAR --runThreadN ${THREADS} --runMode genomeGenerate \
      --genomeDir ${OUTDIR}/star \
@@ -90,6 +92,9 @@ ${STAR}/STAR --runThreadN ${THREADS} --runMode genomeGenerate \
      --sjdbGTFfile ${GTF} \
      --sjdbOverhang 149   
      
+
+echo "RSEM index"
+
 mkdir -p ${OUTDIR}/rsem
 ${RSEM}/rsem-prepare-reference --gtf ${GTF} \
      --star --star-path ${STAR}  \
@@ -135,6 +140,7 @@ samtools index -@ ${THREADS} ${OUTDIR}/${SAMPLE}.starAligned.sortedByCoord.out.b
 BAM="${OUTDIR}/${SAMPLE}.starAligned.toTranscriptome.out.bam"
 
 rm -rf ${OUTDIR}/star
+rm -rf ${OUTDIR}/${SAMPLE}.star_STAR*
 
 else
   if [ ! -f ${BAM}  ];then
