@@ -32,8 +32,9 @@ done
 #conda install sra-tools
 
 sort -u $Accessions | parallel --lb -j ${Threads} "prefetch --force yes --verify yes -p -O ${OUT} {}"
-#sort -u $Accessions | parallel --lb -j ${Threads} "${pfastq} -t ${Threads} --DIR ${OUT}/{}/ --split-3 --gzip ${OUT}/{}/{}.sra "
 
+# parallel jobs: 4, -t threads. Total threads 4*threads
+sort -u $Accessions | parallel --lb -j 4 "${pfastq} -t ${Threads} --split-3 --gzip --outdir ${OUT}/{} ${OUT}/{}/{}.sra && rm ${OUT}/{}/{}.sra"
 
 
 

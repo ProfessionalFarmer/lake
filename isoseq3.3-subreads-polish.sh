@@ -104,7 +104,7 @@ else
 
     ## FLNC reads correction
     source activate lordec 
-    
+        cd ${outdir}
         zcat ${outdir}/${smp}.polished.lq.$rslformt.gz > zcat ${outdir}/${smp}.polished.lq.$rslformt
 
         zcat $fq1 $fq2 | paste - - - - | sed 's/^@/>/g'| cut -f1-2 | tr '\t' '\n' > ${outdir}/${smp}.fastq2fasta      
