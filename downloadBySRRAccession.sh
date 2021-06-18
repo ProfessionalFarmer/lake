@@ -1,7 +1,6 @@
 #! /bin/bash
 
 
-
 Accessions=""
 Threads=5
 OUT="./"

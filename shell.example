@@ -1,0 +1,57 @@
+
+
+
+################# bash getopt
+# Example 1
+while getopts "1:2:s:" arg ## arg is option
+do
+    case $arg in
+        1)
+            FQ1="$OPTARG" # arguments stored in $OPTARG
+            ;;
+        2)
+            FQ2="$OPTARG"
+            ;;
+        s)
+            SAMPLE="$OPTARG"
+            ;;
+        ?)
+            echo "unkonw argument"
+            exit 1
+        esac
+done
+
+################ mkdir 
+# Example 2
+if [ -z $OUTDIR ]; then
+   echo -e "Pls specify output directory"
+   exit 1
+fi
+if [ ! -d "${OUTDIR}" ];then
+    mkdir ${OUTDIR}
+fi
+
+
+
+################# parallel instance example
+# Number of samples to run parallelly per time
+# Example 3
+
+RUNSAMPLE=10
+
+for variable in {1..5};do
+# code --------------
+
+echo "$variable"
+
+((RUNSAMPLE=RUNSAMPLE-1))
+if [ $RUNSAMPLE -eq 0 ];then  
+   wait
+   RUNSAMPLE=10  
+fi 
+
+done
+##############################################
+
+
+

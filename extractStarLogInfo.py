@@ -2,7 +2,8 @@
 ###                                                                                 ###
 ###     Copyright (C) 2020  Zhongxu ZHU, CityU, 20201105                            ###
 #######################################################################################
-
+# ls | grep SRR | awk '{print "python ~/software/lake/extractStarLogInfo.py --sample "$1" --log "$1"/"$1".starLog.final.out" }' | parallel -j 1
+#
 
 import sys,os
 import argparse

@@ -1,5 +1,9 @@
 #! /bin/bash
 
+#ulimit -u 4096
+#ulimit -n 4000
+
+
 OUTDIR=""
 SAMPLE=""
 FQ1=""
@@ -125,22 +129,32 @@ if ${runSTAR};then
 # On the other hand, simply reports only uniquely mapping reads, i.e. discards all the reads that are multi-mappers.  
 # --outFilterMultimapNmax 1 
 
+
+#  STAR does not use strand information for mapping
+# If you want to get a Aligned.sortedByCoord.out.bam, use this option: 
+# --outSAMtype BAM SortedByCoordinate
+
 ${STAR}/STAR --runThreadN ${THREADS} \
-     --genomeDir ${STARIND} \
-     --sjdbGTFfile ${GTF} \
-     --readFilesIn ${FQ1} ${FQ2} \
-     --outSAMtype BAM SortedByCoordinate --outSAMattributes All \
-     --outFileNamePrefix ${OUTDIR}/${SAMPLE}.star --outTmpDir ${OUTDIR}/star  \
-     --twopassMode Basic --outFilterMultimapNmax 1  \
-     --genomeLoad NoSharedMemory --readFilesCommand zcat \
-     --quantMode TranscriptomeSAM GeneCounts --outSAMunmapped Within KeepPairs
+       --genomeDir ${STARIND} \
+       --sjdbGTFfile ${GTF} \
+       --readFilesIn ${FQ1} ${FQ2} \
+       --outSAMtype BAM Unsorted --outSAMattributes All \
+       --outFileNamePrefix ${OUTDIR}/${SAMPLE}.star --outTmpDir ${OUTDIR}/star  \
+       --twopassMode Basic --outFilterMultimapNmax 1  \
+       --genomeLoad NoSharedMemory --readFilesCommand zcat \
+       --quantMode TranscriptomeSAM GeneCounts --outSAMunmapped Within KeepPairs
 
-samtools index -@ ${THREADS} ${OUTDIR}/${SAMPLE}.starAligned.sortedByCoord.out.bam
+if [ $? -ne 0 ]; then
+   echo "${SAMPLE}" >> ~/sample.error
+   exit 1
+fi
 
-BAM="${OUTDIR}/${SAMPLE}.starAligned.toTranscriptome.out.bam"
+  #samtools index -@ ${THREADS} ${OUTDIR}/${SAMPLE}.starAligned.sortedByCoord.out.bam
 
-rm -rf ${OUTDIR}/star
-rm -rf ${OUTDIR}/${SAMPLE}.star_STAR*
+  BAM="${OUTDIR}/${SAMPLE}.starAligned.toTranscriptome.out.bam"
+
+  rm -rf ${OUTDIR}/star
+  rm -rf ${OUTDIR}/${SAMPLE}.star_STAR*
 
 else
   if [ ! -f ${BAM}  ];then
@@ -152,9 +166,18 @@ fi
 
 
 if ${runRSEM};then
+  # --strand-specific
+  # The RNA-Seq protocol used to generate the reads is strand specific, i.e., all (upstream) reads are derived from the forward strand. This option is equivalent to --forward-prob=1.0
   ${RSEM}/rsem-calculate-expression --paired-end -p ${THREADS} \
       --no-bam-output --alignments ${BAM} \
       ${RSEMIND} ${OUTDIR}/${SAMPLE}.rsem
+
+
+  if [ $? -ne 0 ]; then
+    echo "${SAMPLE}" >> ~/sample.error
+    exit 1
+  fi
+
 else
   echo -e "Not run RSEM quantification"
 fi
