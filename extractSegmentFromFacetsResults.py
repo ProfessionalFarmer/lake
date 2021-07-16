@@ -3,7 +3,7 @@
 ###                                                                                 ###
 ###     Copyright (C) 2020  Zhongxu ZHU, CityU, 20200325                            ###
 #######################################################################################
-
+# ls *vcf.gz | cut -f 1 -d '.' | xargs -L 1 -i{} echo " python ~/software/lake/extractSegmentFromFacetsResults.py --sample {} --vcf {}.facets.commonsnp.vcf.gz" | parallel --lb -j 1
 
 import sys,os
 import argparse
@@ -70,7 +70,8 @@ for line in ips:
 
     #if seg_type =='NEUTR': continue
     seg_chr = seg_chr.replace("chr","")
-    
+  
+    # https://github.com/mskcc/facets/issues/84
     # follow the authers recommendation  cnlr.median - dipLogR
     seg_cnlr = str(   round(float(seg_cnlr) - dipLogR,4)   )
     

@@ -64,7 +64,7 @@ if [[ "$output" = "" ]];then
 	cat ${rnd}/${rnd}.invalid_input  1>&2
 else
 	mv ${rnd}/${rnd}.${gversion}_multianno.txt  $output
-        mv ${rnd}/${rnd}.refGene.invalid_input      $output.refGene.invalid_input
+#        mv ${rnd}/${rnd}.refGene.invalid_input      $output.refGene.invalid_input
 fi
 
 rm -rf $rnd
