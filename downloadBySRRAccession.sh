@@ -26,6 +26,10 @@ do
         esac
 done
 
+if [ ! -d $OUT ];then
+    mkdir $OUT
+fi
+
 #conda install parallel-fastq-dump
 #conda install -c hcc aspera-cli
 #conda install sra-tools
