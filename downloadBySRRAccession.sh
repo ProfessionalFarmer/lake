@@ -1,7 +1,7 @@
 #! /bin/bash
 
 
-Accessions=""
+Accessions=
 Threads=5
 OUT="./"
 # https://github.com/rvalieris/parallel-fastq-dump
@@ -26,6 +26,12 @@ do
         esac
 done
 
+if [ ! -n "$Accessions" ];then
+    echo "Must input accesion list by -i option"
+    exit 1
+fi	
+
+
 if [ ! -d $OUT ];then
     mkdir $OUT
 fi
@@ -33,6 +39,8 @@ fi
 #conda install parallel-fastq-dump
 #conda install -c hcc aspera-cli
 #conda install sra-tools
+
+
 
 sort -u $Accessions | parallel --lb -j ${Threads} "prefetch --force yes --verify yes -p -O ${OUT} {}"
 
