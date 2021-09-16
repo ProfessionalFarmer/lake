@@ -119,7 +119,7 @@ if [ ! -d "${OUTDIR}" ];then
 fi
 
 if [ -d "${OUTDIR}/star" ];then
-    rm -rf ${OUTDIR}/star
+    rm -rf ${OUTDIR}/TmpStar
 fi
 
 if ${runSTAR};then
@@ -134,18 +134,19 @@ if ${runSTAR};then
 # If you want to get a Aligned.sortedByCoord.out.bam, use this option: 
 # --outSAMtype BAM SortedByCoordinate
 
+
 ${STAR}/STAR --runThreadN ${THREADS} \
        --genomeDir ${STARIND} \
        --sjdbGTFfile ${GTF} \
        --readFilesIn ${FQ1} ${FQ2} \
        --outSAMtype BAM Unsorted --outSAMattributes All \
-       --outFileNamePrefix ${OUTDIR}/${SAMPLE}.star --outTmpDir ${OUTDIR}/star  \
+       --outFileNamePrefix ${OUTDIR}/${SAMPLE}.star --outTmpDir ${OUTDIR}/TmpStar  \
        --twopassMode Basic --outFilterMultimapNmax 1  \
        --genomeLoad NoSharedMemory --readFilesCommand zcat \
        --quantMode TranscriptomeSAM GeneCounts --outSAMunmapped Within KeepPairs
 
 if [ $? -ne 0 ]; then
-   echo "${SAMPLE}" >> ~/sample.error
+   echo "${SAMPLE}\tSTAR" >> ~/sample.error
    exit 1
 fi
 
@@ -153,7 +154,7 @@ fi
 
   BAM="${OUTDIR}/${SAMPLE}.starAligned.toTranscriptome.out.bam"
 
-  rm -rf ${OUTDIR}/star
+  rm -rf ${OUTDIR}/TmpStar
   rm -rf ${OUTDIR}/${SAMPLE}.star_STAR*
 
 else
@@ -174,7 +175,7 @@ if ${runRSEM};then
 
 
   if [ $? -ne 0 ]; then
-    echo "${SAMPLE}" >> ~/sample.error
+    echo "${SAMPLE}\tRSEM" >> ~/sample.error
     exit 1
   fi
 
