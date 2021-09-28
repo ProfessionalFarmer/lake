@@ -12,7 +12,7 @@ THREADS=20
 
 REF="/data/home2/Zhongxu/ref/hg38/Homo_sapiens_assembly38.fasta"
 #REF="/data0/Zhongxu/ref/hg38/gencode/GRCh38.primary_assembly.genome.fa"
-
+RNALIBRARY="none"
 
 STAR="/data/home2/Zhongxu/software/STAR-2.7.0f/bin/Linux_x86_64/"
 
@@ -67,6 +67,9 @@ do
         t)
             THREADS="$OPTARG"  # overwrite default GTF
             ;;
+	l)
+            RNALIBRARY="$OPTARG" # none|forward|reverse
+	    ;;
         f)
             BAM="$OPTARG"  # overwrite default GTF
             ;;
@@ -134,6 +137,10 @@ if ${runSTAR};then
 # If you want to get a Aligned.sortedByCoord.out.bam, use this option: 
 # --outSAMtype BAM SortedByCoordinate
 
+# Compatibility with Cufflinks/Cuffdif
+# --outSAMstrandField intronMotif
+
+# If you have stranded RNA-seq data, you do not need to use any specific STAR options
 
 ${STAR}/STAR --runThreadN ${THREADS} \
        --genomeDir ${STARIND} \
@@ -169,8 +176,10 @@ fi
 if ${runRSEM};then
   # --strand-specific
   # The RNA-Seq protocol used to generate the reads is strand specific, i.e., all (upstream) reads are derived from the forward strand. This option is equivalent to --forward-prob=1.0
+  # --strandedness <none|forward|reverse>
+  # This option defines the strandedness of the RNA-Seq reads. It recognizes three values: 'none', 'forward', and 'reverse'. 'none' refers to non-strand-specific protocols. 'forward' means all (upstream) reads are derived from the forward strand. 'reverse' means all (upstream) reads are derived from the reverse strand. 
   ${RSEM}/rsem-calculate-expression --paired-end -p ${THREADS} \
-      --no-bam-output --alignments ${BAM} \
+      --strandedness ${RNALIBRARY} --no-bam-output --alignments ${BAM} \
       ${RSEMIND} ${OUTDIR}/${SAMPLE}.rsem
 
 
