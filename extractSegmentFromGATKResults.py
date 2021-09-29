@@ -5,6 +5,8 @@
 #######################################################################################
 
 
+# cat GATK/* | python ~/software/lake/extractSegmentFromGATKResults.py  > GATK.CNV.tsv
+
 import sys,os
 import argparse
 #import numpy as np

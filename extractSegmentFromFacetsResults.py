@@ -65,7 +65,7 @@ for line in ips:
     ##INFO=<ID=TCN_EM,Number=1,Type=Integer,Description="Total copy number. 2 for normal diploid">
     seg_total_cn = info_map["TCN_EM"]
     ##INFO=<ID=LCN_EM,Number=1,Type=Integer,Description="Lesser (minor) copy number. 1 for normal diploid">
-    seg_monor_cn = info_map["LCN_EM"]
+    seg_minor_cn = info_map["LCN_EM"]
 
 
     #if seg_type =='NEUTR': continue
@@ -78,8 +78,8 @@ for line in ips:
     
     #DNAcopy format
     #ID chrom loc.start. loc.end num.mark seg.mean
-    print(args.sample + '\t' + seg_chr + '\t' + seg_star + '\t' + seg_end + '\t' + seg_num_marker + '\t' + seg_cnlr + '\t' + seg_type  + '\t' + seg_total_cn  + '\t' + seg_monor_cn )
-    #print(seg_type,seg_total_cn,seg_monor_cn)
+    print(args.sample + '\t' + seg_chr + '\t' + seg_star + '\t' + seg_end + '\t' + seg_num_marker + '\t' + seg_cnlr + '\t' + seg_type  + '\t' + seg_total_cn  + '\t' + seg_minor_cn )
+    #print(seg_type,seg_total_cn,seg_minor_cn)
     #print()
 
 
