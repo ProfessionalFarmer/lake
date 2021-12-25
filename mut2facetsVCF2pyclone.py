@@ -60,6 +60,7 @@ for line in cf:
             logging.warning("dipLogR"+"\t"+str(dipLogR))
             dipLogR = round(dipLogR, 3)
         elif line.startswith("##purity="):
+            #purity will be NA if Insufficient information to estimate purity. Likely diplod or purity too low.
             purity = float(line.strip().split("=")[1])
             purity = str(round(purity, 3))
             logging.warning("purity"+"\t"+str(purity))
@@ -148,9 +149,9 @@ for line in vf:
         logging.warning("Not find segment information for "+"\t"+str(snv_chr)+"\t"+str(snv_pos)+"\t"+str(snv_alt))
         #sys.exit(1)
     else:
-        # don't consider normal CN
-        if(major_cn=="1" and minor_cn=="1"):
-            continue
+        ## don't consider normal CN
+        #if(major_cn=="1" and minor_cn=="1"):
+        #    continue
         of.write(mutation_id+"\t"+args.sample+"\t"+ref_counts+"\t"+alt_counts+"\t"+major_cn+"\t"+minor_cn+"\t"+normal_cn+"\t"+str(tumour_content)+"\n")
 
     #sys.exit(1)

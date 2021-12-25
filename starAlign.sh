@@ -10,24 +10,25 @@ FQ1=""
 FQ2=""
 THREADS=20
 
-REF="/data/home2/Zhongxu/ref/hg38/Homo_sapiens_assembly38.fasta"
-#REF="/data0/Zhongxu/ref/hg38/gencode/GRCh38.primary_assembly.genome.fa"
+REF="/data/home2/Zhongxu/ref/genecode.v37.star.rsem/GRCh38.primary_assembly.genome.fa"
 RNALIBRARY="none"
 
-STAR="/data/home2/Zhongxu/software/STAR-2.7.0f/bin/Linux_x86_64/"
+#STAR="/data/home2/Zhongxu/software/STAR-2.7.0f/bin/Linux_x86_64/"
+STAR="/data/home2/Zhongxu/software/STAR-2.7.8abin/Linux_x86_64/"
 
 # Default. Can be overwrited by -s
-STARIND="/data/home2/Zhongxu/ref/staridx.hg38.refSeq"
+STARIND="/data/home2/Zhongxu/ref/genecode.v37.star.rsem/starind/star"
 runSTAR="false"
 
 # Default. Can be overwrited by -g
-GTF="/data/home2/Zhongxu/ref/refSeq.hg38.gtf"
-#GTF="/data0/Zhongxu/ref/hg38/gencode/gencode.v37.annotation.gtf"
+#GTF="/data/home2/Zhongxu/ref/refSeq.hg38.gtf"
+GTF="/data/home2/Zhongxu/ref/genecode.v37.star.rsem/gencode.v37.annotation.gtf"
 
-RSEM="/data/home2/Zhongxu/software/RSEM/"
+#RSEM="/data/home2/Zhongxu/software/RSEM/"
+RSEM="/data/home2/Zhongxu/software/RSEM-1.3.3/"
 
 # Default. Can be overwrited by -r
-RSEMIND="/data/home2/Zhongxu/ref/rsemidx.hg38.refSeq/rsem"
+RSEMIND="/data/home2/Zhongxu/ref/genecode.v37.star.rsem/starind/rsem/rsem"
 runRSEM="false"
 
 buildIND="false"
@@ -146,7 +147,7 @@ ${STAR}/STAR --runThreadN ${THREADS} \
        --genomeDir ${STARIND} \
        --sjdbGTFfile ${GTF} \
        --readFilesIn ${FQ1} ${FQ2} \
-       --outSAMtype BAM Unsorted --outSAMattributes All \
+       --outSAMtype BAM SortedByCoordinate --outSAMattributes All \
        --outFileNamePrefix ${OUTDIR}/${SAMPLE}.star --outTmpDir ${OUTDIR}/TmpStar  \
        --twopassMode Basic --outFilterMultimapNmax 1  \
        --genomeLoad NoSharedMemory --readFilesCommand zcat \
@@ -157,8 +158,8 @@ if [ $? -ne 0 ]; then
    exit 1
 fi
 
-  #samtools index -@ ${THREADS} ${OUTDIR}/${SAMPLE}.starAligned.sortedByCoord.out.bam
-
+  samtools index -@ ${THREADS} ${OUTDIR}/${SAMPLE}.starAligned.sortedByCoord.out.bam
+  
   BAM="${OUTDIR}/${SAMPLE}.starAligned.toTranscriptome.out.bam"
 
   rm -rf ${OUTDIR}/TmpStar

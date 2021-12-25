@@ -1,8 +1,10 @@
 #! /bin/bash
 
+# cat meta.dat.tsv| grep -v "Accession" | cut -f 1 | sort | uniq > accession.list
+# nohup bash ~/software/lake/downloadBySRRAccession.sh -i ./accession.list &
 
-Accessions=
-Threads=5
+Accessions=""
+Threads=8
 OUT="./"
 # https://github.com/rvalieris/parallel-fastq-dump
 pfastq="/data/home2/Zhongxu/software/pfastq-dump/bin/pfastq-dump"
@@ -44,8 +46,8 @@ fi
 sort -u $Accessions | parallel --lb -j ${Threads} "prefetch --force yes --verify yes -p -O ${OUT} {}"
 
 # parallel jobs: 4, -t threads. Total threads 4*threads
-#sort -u $Accessions | parallel --lb -j 4 "${pfastq} -t ${Threads} --split-3 --gzip --outdir ${OUT}/{} ${OUT}/{}/{}.sra && rm ${OUT}/{}/{}.sra"
+sort -u $Accessions | parallel --lb -j 4 "${pfastq} -t ${Threads} --split-3 --gzip --outdir ${OUT}/{} ${OUT}/{}/{}.sra && rm ${OUT}/{}/{}.sra"
 
 # not remove sra file
-sort -u $Accessions | parallel --lb -j 4 "${pfastq} -t ${Threads} --split-3 --gzip --outdir ${OUT}/{} ${OUT}/{}/{}.sra"
+#sort -u $Accessions | parallel --lb -j 4 "${pfastq} -t ${Threads} --split-3 --gzip --outdir ${OUT}/{} ${OUT}/{}/{}.sra"
 
