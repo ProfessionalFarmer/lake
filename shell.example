@@ -55,3 +55,20 @@ done
 
 
 
+###################### R
+
+  registerDoParallel(cores=cores)
+  parallel::mcaffinity(c(1:cores))
+
+  library(utils)
+  pb <- utils::txtProgressBar(style = 3)
+
+  setTxtProgressBar(pb, i/replicate)
+
+  close(pb)
+
+
+
+###################
+
+
