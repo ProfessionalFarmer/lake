@@ -23,6 +23,12 @@ do
         esac
 done
 
+if [ ! -d $outputDir ];then
+    mkdir -p $outputDir
+fi
+
+
+
 rm $outputDir/$smp.R1.fastq.gz
 rm $outputDir/$smp.R2.fastq.gz
 for i in `ls $inputDir/$smp*R1_001.fastq.gz`;do
