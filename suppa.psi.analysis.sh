@@ -55,19 +55,19 @@ suppa.py generateEvents -i $basegtf -o ${outdir}/1.merged-ASevents.ioe -e SE SS 
 awk 'FNR==1 && NR!=1{next;}{print}'  ${outdir}/1.merged-ASevents.ioe*ioe  > ${outdir}/2.merged-ASevents.merged7.ioe
 
 #####################
-#for ioe in `ls ${outdir}/1.merged-ASevents.ioe*ioe`
-#do
-#    # psi per event
-#    suppa.py psiPerEvent -i $ioe -e ${tumor}  -o $ioe.3T.AStranscripts.psiPerEvent.tumor
-#    suppa.py psiPerEvent -i $ioe -e ${normal} -o $ioe.3N.AStranscripts.psiPerEvent.normal
-#
-#suppa.py diffSplice --save_tpm_events -m empirical -gc \
-#        -i ${ioe} \
-#        -p ${ioe}.3N.AStranscripts.psiPerEvent.normal.psi ${ioe}.3T.AStranscripts.psiPerEvent.tumor.psi \
-#        --tpm ${normal} ${tumor} \
-#        -o ${ioe}.4.diffSplice.events
-#
-#done
+for ioe in `ls ${outdir}/1.merged-ASevents.ioe*ioe`
+do
+    # psi per event
+    suppa.py psiPerEvent -i $ioe -e ${tumor}  -o $ioe.3T.AStranscripts.psiPerEvent.tumor
+    suppa.py psiPerEvent -i $ioe -e ${normal} -o $ioe.3N.AStranscripts.psiPerEvent.normal
+
+suppa.py diffSplice --save_tpm_events -m empirical -gc \
+        -i ${ioe} \
+        -p ${ioe}.3N.AStranscripts.psiPerEvent.normal.psi ${ioe}.3T.AStranscripts.psiPerEvent.tumor.psi \
+        --tpm ${normal} ${tumor} \
+        -o ${ioe}.4.diffSplice.events
+
+done
 ####################
 
 
@@ -76,11 +76,11 @@ suppa.py psiPerEvent -i ${outdir}/2.merged-ASevents.merged7.ioe -e ${tumor}  -o 
  
 suppa.py psiPerEvent -i ${outdir}/2.merged-ASevents.merged7.ioe -e ${normal} -o ${outdir}/3N.AStranscripts.psiPerEvent.normal
  
-#suppa.py diffSplice --save_tpm_events -m empirical -gc \
-#        -i ${outdir}/2.merged-ASevents.merged7.ioe \
-#        -p ${outdir}/3N.AStranscripts.psiPerEvent.normal.psi ${outdir}/3T.AStranscripts.psiPerEvent.tumor.psi \
-#        --tpm ${normal} ${tumor} \
-#        -o ${outdir}/4.diffSplice.events
+suppa.py diffSplice --save_tpm_events -m empirical -gc \
+        -i ${outdir}/2.merged-ASevents.merged7.ioe \
+        -p ${outdir}/3N.AStranscripts.psiPerEvent.normal.psi ${outdir}/3T.AStranscripts.psiPerEvent.tumor.psi \
+        --tpm ${normal} ${tumor} \
+        -o ${outdir}/4.diffSplice.events
 
 # psi per isoform
 suppa.py psiPerIsoform -e ${tumor} \
@@ -89,11 +89,11 @@ suppa.py psiPerIsoform -e ${tumor} \
 suppa.py psiPerIsoform -e ${normal} \
         -g $basegtf -o ${outdir}/5N.AStranscripts.psiPerIsofrom.normal
 
-#suppa.py diffSplice --method empirical --input ${outdir}/1.merged-ASevents.ioi.ioi \
-#        --psi ${outdir}/5N.AStranscripts.psiPerIsofrom.normal_isoform.psi ${outdir}/5T.AStranscripts.psiPerIsofrom.tumor_isoform.psi \
-#        --tpm ${normal} ${tumor} \
-#        --area 1000 --lower-bound 0.05 -gc \
-#        -o ${outdir}/6.diffSplice.isoform --save_tpm_events
+suppa.py diffSplice --method empirical --input ${outdir}/1.merged-ASevents.ioi.ioi \
+        --psi ${outdir}/5N.AStranscripts.psiPerIsofrom.normal_isoform.psi ${outdir}/5T.AStranscripts.psiPerIsofrom.tumor_isoform.psi \
+        --tpm ${normal} ${tumor} \
+        --area 1000 --lower-bound 0.05 -gc \
+        -o ${outdir}/6.diffSplice.isoform --save_tpm_events
 
 
 #conda deactivate
