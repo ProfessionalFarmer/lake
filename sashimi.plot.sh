@@ -18,5 +18,5 @@
 
 /data/home2/Zhongxu/software/ggsashimi/ggsashimi.py \
 	-b input_bams.tsv -c chr1:32327536-32330686 \
-	-g t.gtf -o sashimi --out-strand plus --out-format svg \
+	-g t.gtf -o sashimi --out-strand both --out-format svg \
 	--palette color.txt -C 3
