@@ -4,6 +4,11 @@
 #ulimit -n 4000
 
 
+##### Example
+# Build index
+# bash starAlign.sh -b -t 20 -g $gtf -o ${out_dir}
+
+
 OUTDIR=""
 SAMPLE=""
 FQ1=""
@@ -14,7 +19,7 @@ REF="/data/home2/Zhongxu/ref/genecode.v37.star.rsem/GRCh38.primary_assembly.geno
 RNALIBRARY="none"
 
 #STAR="/data/home2/Zhongxu/software/STAR-2.7.0f/bin/Linux_x86_64/"
-STAR="/data/home2/Zhongxu/software/STAR-2.7.8abin/Linux_x86_64/"
+STAR="/data/home2/Zhongxu/software/STAR-2.7.8a/bin/Linux_x86_64/"
 
 # Default. Can be overwrited by -s
 STARIND="/data/home2/Zhongxu/ref/genecode.v37.star.rsem/starind/star"
@@ -113,8 +118,8 @@ exit 0
 fi
 
 
-if [ -z "$FQ2" ] || [ -z "$FQ2" ] || [ -z "$SAMPLE" ];then
-    echo -e 'Fastq not exist or sample name not specified'
+if [ -z "$FQ1" ] || [ -z "$FQ2" ] || [ -z "$SAMPLE" ];then
+	echo -e 'Fastq not exist (-1 or -2) or sample name not specified (-s)'
     exit 1
 fi
 

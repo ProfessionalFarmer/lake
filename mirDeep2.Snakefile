@@ -20,7 +20,18 @@ rule all:
         expand(cOUTPUT_DIR + "/{sample}/done.fastqc_clean.txt",sample = SRR),
         expand(cOUTPUT_DIR + "/{sample}/done.mirdeep2.txt",sample = SRR),
         expand(cOUTPUT_DIR + "/{sample}/miRNAs_expressed_all_samples_" + cDATE + ".csv",sample = SRR),
-
+    output:
+        mergedExpression = cOUTPUT_DIR + "/express.tsv",
+        mirdeep2LogInfo = cOUTPUT_DIR + "/{sample}/done.fastqc_clean.txt",
+    params:
+        workDir = cOUTPUT_DIR,
+    shell:
+        """
+        cd {params.workDir}
+        bash /data/home2/Zhongxu/software/lake/mergeMirDeep2Exp.sh ./express.tsv
+        python /data/home2/Zhongxu/software/lake/extractMirDeep2LogInfo.py --dir ./ > mirdeep2.log.tsv
+        multiqc -d ./ -o ./
+        """
 
 rule fastqc_clean:
     input:
@@ -90,7 +101,6 @@ rule mirdeep2:
         # final file: miRNAs_expressed_all_samples_01_01_2023.csv
         head -2 {output.EXPRESSION_CSV}
         """
-
 
 
 

@@ -9,14 +9,14 @@
 import sys,os
 import argparse
 
-# ap = argparse.ArgumentParser(prog=os.path.basename(sys.argv[0]),
-#                                  usage=__doc__)
-# ap.add_argument('--dir', required=True, type=str, help='Target directory including sampple folder')
+ap = argparse.ArgumentParser(prog=os.path.basename(sys.argv[0]),
+                                  usage=__doc__)
+ap.add_argument('--dir', required=True, type=str, help='Target directory including sampple folder')
 
-# args = ap.parse_args()
+args = ap.parse_args()
 
-# dir = args.dir
-dir = "/data0/Zhongxu/work/wenzhouGC/analysis/20230111Prelimenary/3tissuemiRNAtest"
+dir = args.dir
+#dir = "/data0/Zhongxu/work/wenzhouGC/analysis/20230111Prelimenary/3tissuemiRNAtest"
 quantifier_log_suffix = ".quantifier.log"
 samples = next(os.walk(dir))[1]
 
