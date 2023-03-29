@@ -1,7 +1,7 @@
 #! /bin/bash
 
 #ulimit -u 4096
-#ulimit -n 4000
+#ulimit -n 400000
 
 
 ##### Example
