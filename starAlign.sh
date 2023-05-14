@@ -7,7 +7,7 @@
 ##### Example
 # Build index
 # bash starAlign.sh -b -t 20 -g $gtf -o ${out_dir}
-
+# bash starAlign.sh -g $gtf -t 60 -1 R1.fastq.gz  -2 R2.fastq.gz -i ${bsd}/star -r ${bsd}/rsem/rsem -o ${bsd}/${smp} -a -q -s ${smp}
 
 OUTDIR=""
 SAMPLE=""
@@ -154,7 +154,7 @@ ${STAR}/STAR --runThreadN ${THREADS} \
        --readFilesIn ${FQ1} ${FQ2} \
        --outSAMtype BAM SortedByCoordinate --outSAMattributes All \
        --outFileNamePrefix ${OUTDIR}/${SAMPLE}.star --outTmpDir ${OUTDIR}/TmpStar  \
-       --twopassMode Basic --outFilterMultimapNmax 1  \
+       --twopassMode Basic --outSAMmultNmax 1 --outFilterMultimapNmax 1  \
        --genomeLoad NoSharedMemory --readFilesCommand zcat \
        --quantMode TranscriptomeSAM GeneCounts --outSAMunmapped Within KeepPairs
 
@@ -172,7 +172,7 @@ fi
 
 else
   if [ ! -f ${BAM}  ];then
-      echo -e "pls input bam file by -f option"
+      echo -e "BAM not exist. Pls input bam file by -f option"
       exit 1
   fi
 fi

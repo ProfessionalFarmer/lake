@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# https://www.biostars.org/p/477790/
+
 annovarDir="/data0/Zhongxu/software/annovar"
 fa="/data0/Zhongxu/BeeProject/ref/GCF_003254395.2_Amel_HAv3.1_genomic.fna"
 # must gtf
