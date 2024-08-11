@@ -9,9 +9,7 @@ degs_file_path = '/path/to/DEGs.tsv'
 
 from cellphonedb.src.core.methods import cpdb_statistical_analysis_method
 # 统计分析方法：通过随机重排的方式来测试相互作用细胞对平均表达水平的统计显著性。
-# cpdb_results = cpdb_statistical_analysis_method.call(
-# 差异表达方法：根据用户提供的差异表达基因列表来推断细胞间的相互作用。
-cpdb_results = cpdb_degs_analysis_method.call(
+cpdb_results = cpdb_statistical_analysis_method.call(
     cpdb_file_path = cpdb_file_path,                 # mandatory: CellphoneDB database zip file.
     meta_file_path = meta_file_path,                 # mandatory: tsv file defining barcodes to cell label.
     counts_file_path = counts_file_path,             # mandatory: normalized count matrix - a path to the counts file, or an in-memory AnnData object
@@ -39,7 +37,7 @@ list(cpdb_results.keys())
 
 
 # from cellphonedb.src.core.methods import cpdb_degs_analysis_method
-
+# 差异表达方法：根据用户提供的差异表达基因列表来推断细胞间的相互作用。
 # cpdb_results = cpdb_degs_analysis_method.call(
 #     cpdb_file_path = cpdb_file_path,                            # mandatory: CellphoneDB database zip file.
 #     meta_file_path = meta_file_path,                            # mandatory: tsv file defining barcodes to cell label.
